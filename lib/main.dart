@@ -12,7 +12,7 @@ void main() async {
   await initializeDateFormatting('pt_BR', null);
 
   // Inicializa o EnvironmentHelper lendo o arquivo .env
-  // antes de qualquer outra coisa — igual ao padrão monetizze
+  // antes de qualquer inicialização de classes
   await EnvironmentHelper.instance.init();
 
   runApp(const FlutterTemplateApp());

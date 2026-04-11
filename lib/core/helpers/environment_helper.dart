@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Helper responsável pela leitura e disponibilização das variáveis de ambiente.
 ///
-/// Segue o padrão do monetizze:
+/// Segue o padrão Singleton global:
 /// - Singleton acessível via [instance]
 /// - Inicializado uma única vez em [init], chamado no [main] antes do runApp
 /// - Expõe as variáveis via getters tipados

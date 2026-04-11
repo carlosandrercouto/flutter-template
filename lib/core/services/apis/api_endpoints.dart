@@ -4,7 +4,7 @@ import '../../../core/enums/api_request_type_enum.dart';
 
 /// Centralização de todos os endpoints da API do template.
 ///
-/// Segue o mesmo padrão do projeto monetizze:
+/// Repositório de endereços e endpoints da API.
 /// cada valor do enum carrega o [ApiRequestType] e a [url] do endpoint,
 /// evitando que o método HTTP fique espalhado pelo código.
 ///

@@ -7,7 +7,7 @@ import '../repositories/login_repository.dart';
 
 /// Caso de uso responsável por realizar o login do usuário.
 ///
-/// Segue o padrão do monetizze: recebe um objeto [LoginParams]
+/// Segue o padrão de DTOs: recebe um objeto [LoginParams]
 /// com os dados necessários e delega ao repositório.
 class LoginUseCase implements UseCase<UserLoginData, LoginParams> {
   final LoginRepository repository;

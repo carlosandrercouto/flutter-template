@@ -9,7 +9,7 @@ import '../widgets/login_header_widget.dart';
 
 /// Tela de Login do aplicativo.
 ///
-/// Utiliza [BlocConsumer] seguindo o padrão do monetizze:
+/// Utiliza [BlocConsumer] seguindo as diretrizes bloc:
 /// - [listener] para side-effects (navegação, snackbars)
 /// - [builder] delegando a construção visual para os métodos específicos
 class LoginScreen extends StatefulWidget {

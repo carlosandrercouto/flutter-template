@@ -1,6 +1,6 @@
 /// Enum que representa os tipos de erro de login.
 ///
-/// Segue o padrão do monetizze (ex: ProductStatus):
+/// Segue o padrão de parse estático:
 /// cada valor carrega seu próprio [apiMessage] como parâmetro,
 /// e o lookup [fromString] usa [values.firstWhere] sobre esse campo.
 enum LoginErrorType {

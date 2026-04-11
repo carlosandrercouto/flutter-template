@@ -15,8 +15,6 @@ part 'api_request.dart';
 
 /// Serviço centralizado de HTTP.
 ///
-/// Segue o padrão do monetizze:
-/// - Chamável via operador `call()` (assim como no withdraw_datasource)
 /// - Recebe [ApiRequest] com o tipo de requisição, headers, params e body
 /// - Retorna [ApiResponse] com status padronizado
 ///
@@ -34,7 +32,7 @@ class ApiService {
 
   /// Executa uma requisição HTTP.
   ///
-  /// Uso idêntico ao monetizze:
+  /// Exemplo de uso de requisição:
   /// ```dart
   /// final ApiResponse response = await _apiService(
   ///   endpoint: endpoint.url,

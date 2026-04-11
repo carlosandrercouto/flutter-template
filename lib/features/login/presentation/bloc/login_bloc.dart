@@ -14,7 +14,7 @@ part 'login_state.dart';
 
 /// BLoC responsável pelo gerenciamento de estado da tela de login.
 ///
-/// Segue o padrão do monetizze:
+/// Segue o padrão do ecossistema BLoC:
 /// - Recebe [LoginRepository] como dependência injetada
 /// - Mapeia eventos para estados usando handlers privados
 /// - Utiliza [LoginUseCase] para executar a lógica de negócio

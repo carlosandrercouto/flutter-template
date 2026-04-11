@@ -3,7 +3,6 @@ import 'login_error_data_model.dart';
 
 /// Model de dados do usuário após login.
 ///
-/// Segue o padrão do monetizze (ex: MyProductsProductItemModel):
 /// construtor privado [_internal] com super nos parâmetros +
 /// factory [fromMap] responsável pelo parsing do map da API.
 class UserLoginDataModel extends UserLoginData {
@@ -21,7 +20,9 @@ class UserLoginDataModel extends UserLoginData {
       userId: map['userId'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
-      error: map['error'] != null ? LoginErrorDataModel.fromMap(map: map) : null,
+      error: map['error'] != null
+          ? LoginErrorDataModel.fromMap(map: map)
+          : null,
     );
   }
 }

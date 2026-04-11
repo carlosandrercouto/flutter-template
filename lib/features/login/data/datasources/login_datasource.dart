@@ -15,7 +15,7 @@ import '../models/user_login_data_model.dart';
 
 /// Datasource de login.
 ///
-/// Segue o padrão do [WithdrawDatasource] do monetizze:
+/// Arquitetura do Datasource:
 /// - Extends o repositório abstrato diretamente
 /// - Recebe [ApiService] como dependência injetável no construtor
 /// - Cada método: seleciona o endpoint no enum → chama _apiService (ou mock) →
