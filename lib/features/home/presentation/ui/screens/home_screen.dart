@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/helpers/session_helper.dart';
-import '../../../data/datasources/home_datasource.dart';
 import '../../../domain/entities/transaction_entity.dart';
 import '../../bloc/home_bloc.dart';
 import '../widgets/balance_card_widget.dart';
@@ -14,27 +13,14 @@ import '../widgets/transaction_list_widget.dart';
 /// Demonstra o fluxo completo da feature Home:
 /// - Dados do usuário recuperados do [SessionHelper]
 /// - Lista de transações gerenciada pelo [HomeBloc]
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => HomeBloc(homeRepository: HomeDatasource())
-        ..add(const HomeLoadTransactionsEvent()),
-      child: const _HomeView(),
-    );
-  }
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeView extends StatefulWidget {
-  const _HomeView();
-
-  @override
-  State<_HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<_HomeView> {
+class _HomeScreenState extends State<HomeScreen> {
   late HomeBloc _homeBloc;
   final String _userName = SessionHelper.instance.userName;
 

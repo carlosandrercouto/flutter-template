@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../features/home/data/datasources/home_datasource.dart';
+import '../../features/home/presentation/bloc/home_bloc.dart';
 import '../../features/home/presentation/ui/screens/home_screen.dart';
 import '../../features/login/data/datasources/login_datasource.dart';
 import '../../features/login/presentation/bloc/login_bloc.dart';
@@ -18,7 +20,11 @@ Map<String, dynamic> routes = <String, dynamic>{
       ),
 
   // Feature Home
-  RoutesList.HomeScreen.routeName: (_) => const HomeScreen(),
+  RoutesList.HomeScreen.routeName: (_) => BlocProvider(
+        create: (_) => HomeBloc(homeRepository: HomeDatasource())
+          ..add(const HomeLoadTransactionsEvent()),
+        child: const HomeScreen(),
+      ),
 };
 
 List<String> routesRoutedByCupertino = [];
