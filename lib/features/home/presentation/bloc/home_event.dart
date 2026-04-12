@@ -9,6 +9,6 @@ abstract class HomeEvent extends Equatable {
 }
 
 /// Dispara o carregamento das transações.
-class HomeLoadTransactionsEvent extends HomeEvent {
-  const HomeLoadTransactionsEvent();
+class LoadHomeTransactionsEvent extends HomeEvent {
+  const LoadHomeTransactionsEvent();
 }

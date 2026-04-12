@@ -12,5 +12,5 @@ abstract class HomeRepository {
   ///
   /// Retorna [Right] com [HomeDataEntity] em caso de sucesso,
   /// ou [Left] com [Failure] em caso de erro.
-  Future<Either<Failure?, HomeDataEntity>> getHomeData();
+  Future<Either<Failure?, HomeDataEntity>> getHomeTransactonsData();
 }

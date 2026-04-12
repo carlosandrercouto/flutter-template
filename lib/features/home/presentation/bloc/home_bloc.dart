@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/enums/error_state_type_enum.dart';
 import '../../../../core/errors/errors_export.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../data/datasources/home_datasource.dart';
 import '../../domain/entities/entities_export.dart';
 import '../../domain/repositories/home_repository.dart';
 import '../../domain/usecases/usecases_export.dart';
@@ -15,28 +17,55 @@ part 'home_state.dart';
 /// Orquestra o carregamento das transações e expõe os estados
 /// correspondentes para a camada de apresentação.
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc({required this.homeRepository}) : super(HomeInitialState()) {
-    on<HomeLoadTransactionsEvent>(_onLoadTransactions);
+  final HomeRepository _homeRepository;
+
+  HomeBloc({HomeRepository? homeRepository})
+    : _homeRepository = homeRepository ?? HomeDatasource(),
+      super(HomeInitialState()) {
+    on<LoadHomeTransactionsEvent>(_onLoadHomeTransactions);
   }
 
-  final HomeRepository homeRepository;
-
   /// Carrega os dados da tela Home.
-  Future<void> _onLoadTransactions(
-    HomeLoadTransactionsEvent event,
+  Future<void> _onLoadHomeTransactions(
+    LoadHomeTransactionsEvent event,
     Emitter<HomeState> emit,
   ) async {
-    emit(HomeLoadingState());
+    emit(LoadingHomeTransactionsState());
 
-    final useCase = GetHomeDataUseCase(repository: homeRepository);
-    final result = await useCase(NoParams());
+    /// TODO: Adicionar verificação de device offline
 
-    result.fold((failure) {
-      if (failure is TimeoutFailure) {
-        emit(HomeErrorTimeoutState());
-      } else {
-        emit(HomeErrorState(message: 'Não foi possível carregar os dados.'));
-      }
-    }, (homeData) => emit(HomeLoadedState(homeData: homeData)));
+    final getHomeTransactionDataUseCase = GetHomeTransactionDataUseCase(
+      repository: _homeRepository,
+    );
+    final getHomeTransactionData = await getHomeTransactionDataUseCase(
+      NoParams(),
+    );
+
+    getHomeTransactionData.fold(
+      (failure) {
+        if (failure is TimeoutFailure) {
+          emit(
+            ErrorLoadHomeTransactionsState(
+              errorStateType: ErrorStateType.timeout,
+            ),
+          );
+        } else if (failure is SessionExpiredFailure) {
+          emit(
+            ErrorLoadHomeTransactionsState(
+              errorStateType: ErrorStateType.sessionExpired,
+            ),
+          );
+        } else {
+          emit(
+            ErrorLoadHomeTransactionsState(
+              errorStateType: ErrorStateType.genericError,
+            ),
+          );
+        }
+      },
+      (HomeDataEntity data) {
+        emit(LoadedHomeTranactionsState(homeData: data));
+      },
+    );
   }
 }

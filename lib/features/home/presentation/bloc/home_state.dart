@@ -9,12 +9,12 @@ abstract class HomeState extends Equatable {
 /// Estado inicial — antes de qualquer carregamento.
 class HomeInitialState extends HomeState {}
 
-/// Estado de carregamento das transações.
-class HomeLoadingState extends HomeState {}
+// Relacionado ao evento LoadHomeTransactionsEvent
+// =====================================================================================================================
+class LoadingHomeTransactionsState extends HomeState {}
 
-/// Estado de sucesso com os dados da home (saldo e transações) carregados.
-class HomeLoadedState extends HomeState {
-  HomeLoadedState({required this.homeData});
+class LoadedHomeTranactionsState extends HomeState {
+  LoadedHomeTranactionsState({required this.homeData});
 
   final HomeDataEntity homeData;
 
@@ -22,18 +22,11 @@ class HomeLoadedState extends HomeState {
   List<Object?> get props => [homeData];
 }
 
-/// Estado de erro genérico.
-class HomeErrorState extends HomeState {
-  HomeErrorState({this.message});
+class ErrorLoadHomeTransactionsState extends HomeState {
+  ErrorLoadHomeTransactionsState({required this.errorStateType});
 
-  final String? message;
+  final ErrorStateType errorStateType;
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [errorStateType];
 }
-
-/// Estado de erro por timeout.
-class HomeErrorTimeoutState extends HomeState {}
-
-/// Estado de erro de sessão expirada.
-class HomeErrorUserSessionState extends HomeState {}

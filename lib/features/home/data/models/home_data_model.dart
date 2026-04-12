@@ -6,7 +6,7 @@ import 'transaction_model.dart';
 class HomeDataModel extends HomeDataEntity {
   const HomeDataModel._internal({
     required super.balance,
-    required super.transactions,
+    required super.transactionsList,
   });
 
   factory HomeDataModel.fromMap({required Map<String, dynamic> map}) {
@@ -15,7 +15,7 @@ class HomeDataModel extends HomeDataEntity {
 
     return HomeDataModel._internal(
       balance: BalanceModel.fromMap(map: balanceMap),
-      transactions: transactionsList
+      transactionsList: transactionsList
           .map(
             (item) =>
                 TransactionModel.fromMap(map: item as Map<String, dynamic>),

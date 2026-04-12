@@ -20,9 +20,7 @@ Map<String, dynamic> routes = <String, dynamic>{
 
   // Feature Home
   RoutesList.HomeScreen.routeName: (_) => BlocProvider(
-    create: (_) =>
-        HomeBloc(homeRepository: HomeDatasource())
-          ..add(const HomeLoadTransactionsEvent()),
+    create: (_) => HomeBloc(),
     child: const HomeScreen(),
   ),
 };

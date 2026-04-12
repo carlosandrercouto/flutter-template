@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/enums/error_state_type_enum.dart';
 import '../../../../../core/helpers/session_helper.dart';
 import '../../../domain/entities/entities_export.dart';
 import '../../bloc/home_bloc.dart';
@@ -25,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _homeBloc.add(const LoadHomeTransactionsEvent());
+
     super.initState();
   }
 
@@ -40,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BlocBuilder<HomeBloc, HomeState>(
               bloc: _homeBloc,
               builder: (context, state) {
-                if (state is HomeLoadedState) {
+                if (state is LoadedHomeTranactionsState) {
                   return BalanceCardWidget(balance: state.homeData.balance);
                 }
                 return const BalanceCardWidget();
@@ -54,34 +57,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 bloc: _homeBloc,
                 listenWhen: (_, current) {
                   return [
-                    HomeErrorUserSessionState,
+                    ErrorLoadHomeTransactionsState,
                   ].contains(current.runtimeType);
                 },
                 listener: (context, state) {
-                  if (state is HomeErrorUserSessionState) {
-                    // Exemplo: redirecionar para login
+                  if (state is ErrorLoadHomeTransactionsState &&
+                      state.errorStateType == ErrorStateType.sessionExpired) {
+                    /// TODO: Implementar tratamento para quando a sessão do usuário expirar
                     // Navigator.of(context, rootNavigator: true).pushReplacementNamed('/login');
                   }
                 },
                 buildWhen: (previous, current) {
-                  return (current is HomeLoadingState ||
-                      current is HomeLoadedState ||
-                      current is HomeErrorState ||
-                      current is HomeErrorTimeoutState ||
-                      current is HomeErrorUserSessionState);
+                  return (current is LoadingHomeTransactionsState ||
+                      current is LoadedHomeTranactionsState ||
+                      current is ErrorLoadHomeTransactionsState);
                 },
                 builder: (BuildContext context, HomeState currentState) {
-                  if (currentState is HomeLoadedState) {
-                    return _loadedHomeState(currentState.homeData.transactions);
-                  } else if (currentState is HomeErrorTimeoutState) {
-                    return _errorTimeoutHomeState();
-                  } else if (currentState is HomeErrorUserSessionState) {
-                    // Fallback visual case not immediately redirected
-                    return _errorGenericHomeState(
-                      'Sessão expirada. Faça login novamente.',
+                  if (currentState is LoadedHomeTranactionsState) {
+                    return _loadedHomeState(
+                      currentState.homeData.transactionsList,
                     );
-                  } else if (currentState is HomeErrorState) {
-                    return _errorGenericHomeState(currentState.message);
+                  } else if (currentState is ErrorLoadHomeTransactionsState) {
+                    return _errorHandleLoadTransactionsState(currentState);
                   }
 
                   return _loadingHomeState();
@@ -118,45 +115,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return TransactionListWidget(transactions: transactions);
   }
 
-  Widget _errorTimeoutHomeState() {
-    return _buildErrorView(
-      icon: Icons.wifi_off_rounded,
-      message: 'Sem conexão com a internet.\nToque para tentar novamente.',
-    );
-  }
-
-  Widget _errorGenericHomeState(String? message) {
-    return _buildErrorView(
+  Widget _errorHandleLoadTransactionsState(
+    ErrorLoadHomeTransactionsState state,
+  ) {
+    return HomeErrorWidget(
       icon: Icons.error_outline_rounded,
-      message:
-          message ??
-          'Erro ao carregar transações.\nToque para tentar novamente.',
+      message: state.errorStateType.message,
+      onTap: () => _homeBloc.add(const LoadHomeTransactionsEvent()),
     );
   }
 
-  Widget _buildErrorView({required IconData icon, required String message}) {
-    return Center(
-      child: InkWell(
-        onTap: () => _homeBloc.add(const HomeLoadTransactionsEvent()),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: const Color(0xFF9BA3B8), size: 42),
-              const SizedBox(height: 12),
-              Text(
-                message,
-                style: const TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widgets auxiliares
+  // ===================================================================================================================
 
   Widget _buildTransactionListTitle(BuildContext context) {
     return const Padding(

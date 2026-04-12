@@ -26,13 +26,13 @@ class HomeDatasource extends HomeRepository {
     : _apiService = apiService ?? ApiService();
 
   @override
-  Future<Either<Failure?, HomeDataEntity>> getHomeData() async {
+  Future<Either<Failure?, HomeDataEntity>> getHomeTransactonsData() async {
     final ApiEndpoints endpoint = ApiEndpoints.getTransactions;
 
     final ApiResponse apiResponse = await _apiService(
       endpoint: endpoint.url,
       request: ApiRequest(requestType: endpoint.requestType, body: {}),
-      devLog: 'HomeDatasource: getHomeData',
+      devLog: 'HomeDatasource: getHomeTransactonsData',
       currentStackTrace: StackTrace.current,
     );
 
@@ -44,7 +44,10 @@ class HomeDatasource extends HomeRepository {
 
         return Right(resultData);
       } catch (error) {
-        log('Error: ${error.toString()}', name: 'HomeDatasource: getHomeData');
+        log(
+          'Error: ${error.toString()}',
+          name: 'HomeDatasource: getHomeTransactonsData',
+        );
 
         /// TODO: Implementar gravação de log de erro no Crashlytics ou simular
         return const Left(null);
