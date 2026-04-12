@@ -57,7 +57,7 @@ class ApiService {
     required StackTrace currentStackTrace,
     int apiRequestTimeout = 30,
   }) async {
-    if (_envHelper.useMock) {
+    if (_envHelper.useMock && _mockHelper.shouldMockRoute(endpoint)) {
       return _mockHelper.call(
         endpoint: endpoint,
         body: request.body is Map<String, dynamic>

@@ -34,6 +34,9 @@ class MockHelper {
     '/home/transactions': _handleGetTransactions,
   };
 
+  /// Verifica se a rota especificada possui um mock cadastrado.
+  bool shouldMockRoute(String endpoint) => _mocks.containsKey(endpoint);
+
   /// Retorna a [ApiResponse] mockada para o [endpoint] informado.
   ///
   /// Se não houver mock cadastrado para o endpoint, retorna erro genérico.
