@@ -44,7 +44,7 @@ void main() {
         },
       );
 
-      final result = await datasource.login(
+      final result = await datasource.postRequestLogin(
         email: 'email@test.com',
         password: '123',
       );
@@ -63,7 +63,10 @@ void main() {
           status: ApiResponseStatus.errorTimeout,
         );
 
-        final result = await datasource.login(email: 'email', password: '123');
+        final result = await datasource.postRequestLogin(
+          email: 'email',
+          password: '123',
+        );
 
         expect(result.isLeft(), isTrue);
         result.fold(

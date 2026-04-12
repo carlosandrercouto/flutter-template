@@ -4,14 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('LoginErrorDataModel', () {
-    test('deve interpretar a string de erro a partir do map para enumerador corretamente', () {
-      final map = {
-        'error': 'invalidMethod',
-      };
+    test(
+      'deve interpretar a string de erro a partir do map para enumerador corretamente',
+      () {
+        final map = {'error': 'invalidMethod'};
 
-      final model = LoginErrorDataModel.fromMap(map: map);
+        final model = LoginErrorDataModel.fromMap(map: map);
 
-      expect(model.errorType, LoginErrorType.fromString('invalidMethod'));
-    });
+        expect(model.errorType, LoginErrorType.fromString('invalidMethod'));
+      },
+    );
   });
 }

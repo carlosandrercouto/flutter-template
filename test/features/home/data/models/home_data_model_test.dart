@@ -7,19 +7,15 @@ void main() {
   group('HomeDataModel', () {
     test('fromMap deve mapear corretamente com dados válidos', () {
       final map = {
-        'balance': {
-          'id': 'abc',
-          'value': 1500.5,
-          'visible': true,
-        },
+        'balance': {'id': 'abc', 'value': 1500.5, 'visible': true},
         'transactions': [
           {
             'id': '1',
             'name': 'Test 1',
             'amount': 25.0,
-            'date': '2024-03-15T10:30:00Z'
-          }
-        ]
+            'date': '2024-03-15T10:30:00Z',
+          },
+        ],
       };
 
       final model = HomeDataModel.fromMap(map: map);
