@@ -19,12 +19,12 @@ class UserLoginData extends Equatable {
   });
 
   factory UserLoginData.empty() => const UserLoginData(
-        token: '',
-        userId: '',
-        name: '',
-        email: '',
-        error: null,
-      );
+    token: '',
+    userId: '',
+    name: '',
+    email: '',
+    error: null,
+  );
 
   bool get isAuthenticated => token.isNotEmpty && userId.isNotEmpty;
 

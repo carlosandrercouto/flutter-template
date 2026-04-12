@@ -1,4 +1,4 @@
-import 'package:flutter_template/core/shared/domain/entities/user_login_data.dart';
+import 'package:flutter_template/features/login/domain/entities/user_login_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

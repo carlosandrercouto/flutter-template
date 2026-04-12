@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import '../shared/domain/entities/user_login_data.dart';
+import '../../features/login/domain/entities/user_login_data.dart';
 
 /// Gerencia os dados da sessão do usuário em memória.
 ///
@@ -49,7 +49,9 @@ class SessionHelper {
     _userLoginData = userLoginData;
 
     log(userLoginData.userId, name: '👤 SessionHelper: userId');
-    log(userLoginData.token.isNotEmpty ? '[token set]' : '[token empty]',
-        name: '👤 SessionHelper: token');
+    log(
+      userLoginData.token.isNotEmpty ? '[token set]' : '[token empty]',
+      name: '👤 SessionHelper: token',
+    );
   }
 }

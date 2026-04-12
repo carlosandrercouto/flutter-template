@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../../core/shared/domain/entities/user_login_data.dart';
+import '../entities/user_login_data.dart';
 
 /// Contrato do repositório de login.
 ///

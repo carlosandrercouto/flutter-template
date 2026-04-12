@@ -1,4 +1,4 @@
-import '../../../../core/shared/domain/entities/user_login_data.dart';
+import '../../domain/entities/user_login_data.dart';
 import 'login_error_data_model.dart';
 
 /// Model de dados do usuário após login.

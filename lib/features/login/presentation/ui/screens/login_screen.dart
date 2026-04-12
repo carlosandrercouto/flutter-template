@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/routes/routes_list.dart';
 import '../../bloc/login_bloc.dart';
-import '../widgets/login_form_widget.dart';
-import '../widgets/login_header_widget.dart';
+import '../widgets/widgets_export.dart';
 
 /// Tela de Login do aplicativo.
 ///
@@ -34,7 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
       _showLoading();
     } else if (state is LoginSuccessState) {
       _dismissLoading();
-      Navigator.of(context).pushReplacementNamed(RoutesList.HomeScreen.routeName);
+      Navigator.of(
+        context,
+      ).pushReplacementNamed(RoutesList.HomeScreen.routeName);
     } else if (state is LoginErrorState) {
       _dismissLoading();
       _showSnackbar(context, state.message);
@@ -42,9 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onLoginSubmitted(String email, String password) {
-    _loginBloc.add(
-      LoginSubmittedEvent(email: email, password: password),
-    );
+    _loginBloc.add(LoginSubmittedEvent(email: email, password: password));
   }
 
   void _showLoading() {
@@ -89,9 +88,10 @@ class _LoginScreenState extends State<LoginScreen> {
               child: BlocConsumer<LoginBloc, LoginState>(
                 bloc: _loginBloc,
                 listener: _handleState,
-                buildWhen: (previous, current) => current is LoginInitialState || current is LoginErrorState,
+                buildWhen: (previous, current) =>
+                    current is LoginInitialState || current is LoginErrorState,
                 builder: (context, state) {
-                  // Como a UI da tela de login será quase sempre a mesma 
+                  // Como a UI da tela de login será quase sempre a mesma
                   // independentemente do estado (sendo apenas sobreposta por diálogos de loading),
                   // retornamos o método padrão que monta os elementos isolados.
                   return _loginFormState();

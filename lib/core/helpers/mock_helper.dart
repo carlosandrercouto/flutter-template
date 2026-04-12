@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import '../enums/api_response_status_enum.dart';
-import '../shared/domain/entities/api_response.dart';
+import '../entities/api_response.dart';
 
 /// Helper centralizado de respostas mockadas.
 ///
@@ -166,7 +166,6 @@ class MockHelper {
       },
     );
   }
-
 }
 
 /// Tipo da função handler de mock.

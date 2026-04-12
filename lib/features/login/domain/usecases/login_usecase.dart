@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../../core/shared/domain/entities/user_login_data.dart';
+import '../entities/user_login_data.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../repositories/login_repository.dart';
 
@@ -16,10 +16,7 @@ class LoginUseCase implements UseCase<UserLoginData, LoginParams> {
 
   @override
   Future<Either<Failure?, UserLoginData>> call(LoginParams params) {
-    return repository.login(
-      email: params.email,
-      password: params.password,
-    );
+    return repository.login(email: params.email, password: params.password);
   }
 }
 
@@ -28,8 +25,5 @@ class LoginParams {
   final String email;
   final String password;
 
-  LoginParams({
-    required this.email,
-    required this.password,
-  });
+  LoginParams({required this.email, required this.password});
 }

@@ -6,10 +6,11 @@ import '../../../../core/enums/api_response_status_enum.dart';
 import '../../../../core/errors/errors_export.dart';
 import '../../../../core/services/api_service.dart';
 import '../../../../core/services/apis/api_endpoints.dart';
-import '../../../../core/shared/domain/entities/api_response.dart';
-import '../../../../core/shared/domain/entities/user_login_data.dart';
+import '../../../../core/entities/api_response.dart';
+
+import '../../domain/entities/entities_export.dart';
 import '../../domain/repositories/login_repository.dart';
-import '../models/user_login_data_model.dart';
+import '../models/models_export.dart';
 
 /// Datasource de login.
 ///

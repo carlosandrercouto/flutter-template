@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/errors/errors_export.dart';
 import '../../../../core/helpers/session_helper.dart';
-import '../../../../core/errors/timeout_failure.dart';
-import '../../../../core/shared/domain/entities/user_login_data.dart';
+
+import '../../domain/entities/entities_export.dart';
 import '../../domain/repositories/login_repository.dart';
-import '../../domain/usecases/login_usecase.dart';
+import '../../domain/usecases/usecases_export.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -36,16 +37,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final useCase = LoginUseCase(repository: loginRepository);
 
     final result = await useCase(
-      LoginParams(
-        email: event.email,
-        password: event.password,
-      ),
+      LoginParams(email: event.email, password: event.password),
     );
 
     result.fold(
       (failure) {
         if (failure is TimeoutFailure) {
-          emit(LoginErrorState(message: 'Tempo limite excedido. Verifique sua conexão.'));
+          emit(
+            LoginErrorState(
+              message: 'Tempo limite excedido. Verifique sua conexão.',
+            ),
+          );
         } else {
           emit(LoginErrorState(message: 'Ocorreu um erro inesperado.'));
         }
