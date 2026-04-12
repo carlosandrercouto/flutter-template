@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/helpers/session_helper.dart';
-import '../../../domain/entities/transaction_entity.dart';
+import '../../../domain/entities/entities_export.dart';
 import '../../bloc/home_bloc.dart';
-import '../widgets/balance_card_widget.dart';
-import '../widgets/home_header_widget.dart';
-import '../widgets/transaction_list_widget.dart';
+import '../widgets/widgets_export.dart';
 
 /// Tela principal da aplicação.
 ///
@@ -79,7 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     return _errorTimeoutHomeState();
                   } else if (currentState is HomeErrorUserSessionState) {
                     // Fallback visual case not immediately redirected
-                    return _errorGenericHomeState('Sessão expirada. Faça login novamente.');
+                    return _errorGenericHomeState(
+                      'Sessão expirada. Faça login novamente.',
+                    );
                   } else if (currentState is HomeErrorState) {
                     return _errorGenericHomeState(currentState.message);
                   }
@@ -128,7 +128,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _errorGenericHomeState(String? message) {
     return _buildErrorView(
       icon: Icons.error_outline_rounded,
-      message: message ?? 'Erro ao carregar transações.\nToque para tentar novamente.',
+      message:
+          message ??
+          'Erro ao carregar transações.\nToque para tentar novamente.',
     );
   }
 

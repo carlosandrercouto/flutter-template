@@ -7,9 +7,10 @@ import '../../../../core/errors/errors_export.dart';
 import '../../../../core/services/api_service.dart';
 import '../../../../core/services/apis/api_endpoints.dart';
 import '../../../../core/entities/api_response.dart';
-import '../../domain/entities/home_data_entity.dart';
+
+import '../../domain/entities/entities_export.dart';
 import '../../domain/repositories/home_repository.dart';
-import '../models/home_data_model.dart';
+import '../models/models_export.dart';
 
 /// Datasource da home.
 ///

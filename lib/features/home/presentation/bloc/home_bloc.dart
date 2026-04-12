@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/errors/timeout_failure.dart';
+import '../../../../core/errors/errors_export.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../domain/entities/home_data_entity.dart';
+import '../../domain/entities/entities_export.dart';
 import '../../domain/repositories/home_repository.dart';
-import '../../domain/usecases/get_home_data_usecase.dart';
+import '../../domain/usecases/usecases_export.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -31,15 +31,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final useCase = GetHomeDataUseCase(repository: homeRepository);
     final result = await useCase(NoParams());
 
-    result.fold(
-      (failure) {
-        if (failure is TimeoutFailure) {
-          emit(HomeErrorTimeoutState());
-        } else {
-          emit(HomeErrorState(message: 'Não foi possível carregar os dados.'));
-        }
-      },
-      (homeData) => emit(HomeLoadedState(homeData: homeData)),
-    );
+    result.fold((failure) {
+      if (failure is TimeoutFailure) {
+        emit(HomeErrorTimeoutState());
+      } else {
+        emit(HomeErrorState(message: 'Não foi possível carregar os dados.'));
+      }
+    }, (homeData) => emit(HomeLoadedState(homeData: homeData)));
   }
 }
