@@ -125,3 +125,7 @@ app.*.symbols
 
 # FVM Version Cache
 .fvm/
+# Firebase configuration files
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart

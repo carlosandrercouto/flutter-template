@@ -54,6 +54,19 @@ USE_MOCK=true
 ```
 2. A classe `EnvironmentHelper` (no core do app) carrega automaticamente este arquivo antes do `runApp()`.
 
+### 3. Configuração do Firebase
+Este projeto utiliza **Firebase Auth** e **Crashlytics**. Por motivos de segurança e boas práticas de CI/CD, os arquivos de configuração **não são commitados**.
+
+Para configurar seu ambiente local:
+
+1. Crie um projeto no [Console do Firebase](https://console.firebase.google.com/).
+2. Adicione os aplicativos Android e iOS utilizando os Package Names / Bundle IDs adequados.
+3. Baixe os arquivos de configuração e coloque-os nos seguintes diretórios:
+    *   **Android:** `android/app/google-services.json`
+    *   **iOS:** `ios/Runner/GoogleService-Info.plist`
+4. (Somente iOS) Certifique-se de associar o arquivo ao projeto no Xcode.
+5. Se for utilizar Google Sign-In, registre seu SHA-1 no console do Firebase.
+
 ---
 
 ## 🧪 Como funciona o Sistema de Mocks (Desenvolvimento Offline)

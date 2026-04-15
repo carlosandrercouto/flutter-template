@@ -13,6 +13,11 @@ dependencies:
   # Environment
   flutter_dotenv: ^5.2.1
 
+  # Firebase
+  firebase_core: ^3.12.1
+  firebase_auth: ^5.5.1
+  firebase_crashlytics: ^4.3.1
+
   # State Management
   flutter_bloc: ^9.1.1
   equatable: ^2.0.7
@@ -23,14 +28,19 @@ dependencies:
   # HTTP
   http: ^1.4.0
 
+  # Image Cache
+  cached_network_image: ^3.4.1
+
   # Internationalisation (date & currency formatting)
   intl: ^0.20.2
+  sqflite: ^2.4.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
   bloc_test: ^10.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
