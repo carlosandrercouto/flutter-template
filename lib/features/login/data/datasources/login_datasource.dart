@@ -31,39 +31,43 @@ class LoginDatasource extends LoginRepository {
     required String password,
   }) async {
     try {
-      final credential = await _authHelper.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final UserCredential credential = await _authHelper
+          .signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
 
       final idToken = await _authHelper.getIdToken();
 
       if (idToken == null) {
-        log('idToken is null after login', name: 'LoginDatasource');
+        log(
+          'idToken is null after login',
+          name: 'LoginDatasource: postRequestLogin',
+        );
         return const Left(null);
       }
 
-      final result = UserLoginDataModel.fromFirebase(
-        credential: credential,
-        idToken: idToken,
+      return Right(
+        UserLoginDataModel.fromFirebase(
+          userCredential: credential,
+          idToken: idToken,
+        ),
       );
-
-      return Right(result);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (error) {
       log(
-        'FirebaseAuthException: ${e.code} — ${e.message}',
-        name: 'LoginDatasource',
+        'FirebaseAuthException: ${error.code}',
+        name: 'LoginDatasource: postRequestLogin',
       );
 
       return Right(
-        UserLoginData.empty().copyWith(
-          error: LoginErrorData(errorType: LoginErrorType.fromFirebaseCode(e.code)),
+        UserLoginDataModel.fromFirebaseError(
+          error: error.code,
         ),
       );
     } catch (error, stackTrace) {
       log(
         'Unexpected error: $error',
-        name: 'LoginDatasource',
+        name: 'LoginDatasource: postRequestLogin',
         stackTrace: stackTrace,
       );
       return const Left(null);

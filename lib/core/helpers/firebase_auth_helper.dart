@@ -29,7 +29,7 @@ class FirebaseAuthHelper {
   /// Instância singleton do [FirebaseAuthHelper].
   static FirebaseAuthHelper get instance => _instance;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /// Usuário autenticado no momento, ou null se não houver sessão ativa.
   User? get currentUser => _auth.currentUser;

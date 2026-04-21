@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_template/core/enums/login_error_type_enum.dart';
 
-import 'login_error_data.dart';
 
 /// Entidade de domínio que representa os dados do usuário após login bem-sucedido.
 class UserLoginData extends Equatable {
@@ -16,7 +15,7 @@ class UserLoginData extends Equatable {
     required this.userId,
     required this.name,
     required this.email,
-    required this.error,
+    this.error,
   });
 
   bool get isAuthenticated => token.isNotEmpty && userId.isNotEmpty;
