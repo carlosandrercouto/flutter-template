@@ -129,3 +129,7 @@ app.*.symbols
 google-services.json
 GoogleService-Info.plist
 firebase_options.dart
+
+firebase/cloud/node_modules
+firebase/cloud/package-lock.json
+
