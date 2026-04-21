@@ -13,8 +13,8 @@ trigger: always_on
 ## 2. Organização e Nomenclatura
 - **Estrutura:** Espelhe a pasta `/lib` dentro de `/test`.
 - **Sufixos:**
-  - Arquivos: `_test.dart`, `_mock.dart`, `_fixture.dart`.
-  - Classes: `MockClass`, `FakeClass`, `ClassFixture`.
+  - Arquivos: `_test.dart`, `_mock.dart`.
+  - Classes: `MockClass`, `FakeClass`.
   - Variáveis: `repositoryMock`, `validData`.
 - **Limpeza:** Use `reset(mock)` no `tearDown()`, nunca no `setUp()`.
 
@@ -34,22 +34,17 @@ trigger: always_on
 - **Entities:** Use `HelpersTestUtils.testObjectEquality` para testar `Equatable` (props, ==, hashCode).
 - **Equality em Blocs:** Use `isA<State>()` no `expect` e verifique propriedades no `verify`.
 
-## 4. Fixtures e Mocks
-- **Fixtures:** 
-  - Retorne `Map<String, dynamic>` para dados de API (evite JSON Strings).
-  - Use `static const` para instâncias estáticas.
-  - Reutilize constantes para evitar duplicatas.
+## 4. Mocks
 - **Mocks:**
   - Use `setupDefaults(mock)` estático para comportamentos comuns (ex: estar online).
   - Use métodos utilitários como `ApiServiceMock.createSuccessResponse()`.
 
 ## 5. Boas Práticas (Checklist)
-- [ ] Títulos descritivos em Inglês Americano?
+- [ ] Títulos descritivos em Português?
 - [ ] Testou cenários de erro (offline, timeout, etc.)?
 - [ ] Injetou mocks corretamente (DataSource em UseCase)?
 - [ ] Usou `verifyNoMoreInteractions()` para garantir limpeza?
 - [ ] Usou `isA<Type>()` em Blocs em vez de instâncias específicas?
-- [ ] Fixtures são Maps e usam `static const`?
 - [ ] `tearDown` possui os `reset()` necessários?
 
 ---

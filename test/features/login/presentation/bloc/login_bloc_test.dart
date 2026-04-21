@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/enums/error_state_type_enum.dart';
+import 'package:flutter_template/core/enums/login_error_type_enum.dart';
 import 'package:flutter_template/core/errors/errors_export.dart';
 import 'package:flutter_template/core/helpers/session_helper.dart';
 import 'package:flutter_template/features/login/domain/entities/entities_export.dart';
@@ -8,19 +9,22 @@ import 'package:flutter_template/features/login/domain/repositories/login_reposi
 import 'package:flutter_template/features/login/presentation/bloc/login_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class MockLoginRepository implements LoginRepository {
+// ---------------------------------------------------------------------------
+// Mocks
+// ---------------------------------------------------------------------------
+
+class _MockLoginRepository implements LoginRepository {
   Either<Failure?, UserLoginData>? result;
 
   @override
   Future<Either<Failure?, UserLoginData>> postRequestLogin({
     required String email,
     required String password,
-  }) async {
-    return result ?? const Left(null);
-  }
+  }) async =>
+      result ?? const Left(null);
 }
 
-class MockSessionHelper implements SessionHelper {
+class _MockSessionHelper implements SessionHelper {
   UserLoginData? initializedData;
 
   @override
@@ -28,23 +32,56 @@ class MockSessionHelper implements SessionHelper {
     initializedData = userLoginData;
   }
 
-  // A documentação do mock para testes que não implementam tudo corretamente exige métodos do mixin.
-  // Vamos usar noSuchMethod caso existam outras dependências omitidas.
+  // Getters de SessionHelper que o mock não usa nos testes,
+  // mas devem estar presentes para satisfazer o contrato.
   @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+  UserLoginData get userLoginData => throw UnimplementedError();
+
+  @override
+  String get token => throw UnimplementedError();
+
+  @override
+  String get userId => throw UnimplementedError();
+
+  @override
+  String get userName => throw UnimplementedError();
+
+  @override
+  String get userEmail => throw UnimplementedError();
+
+  @override
+  bool get isAuthenticated => throw UnimplementedError();
 }
 
+// ---------------------------------------------------------------------------
+// Constantes de teste
+// ---------------------------------------------------------------------------
+
+const _tUserLoginData = UserLoginData(
+  token: 'abc',
+  userId: '1',
+  name: 'User',
+  email: 'user@test.com',
+);
+
+const _tEmail = 'test@test.com';
+const _tPassword = '123';
+
+// ---------------------------------------------------------------------------
+// Testes
+// ---------------------------------------------------------------------------
+
 void main() {
-  late MockLoginRepository mockLoginRepository;
-  late MockSessionHelper mockSessionHelper;
+  late _MockLoginRepository mockLoginRepository;
+  late _MockSessionHelper mockSessionHelper;
 
   setUp(() {
-    mockLoginRepository = MockLoginRepository();
-    mockSessionHelper = MockSessionHelper();
+    mockLoginRepository = _MockLoginRepository();
+    mockSessionHelper = _MockSessionHelper();
   });
 
   group('LoginBloc', () {
-    test('initial state is LoginInitialState', () {
+    test('initial state should be LoginInitialState', () {
       final bloc = LoginBloc(
         loginRepository: mockLoginRepository,
         sessionHelper: mockSessionHelper,
@@ -56,33 +93,25 @@ void main() {
     blocTest<LoginBloc, LoginState>(
       'should emit [RequestingLoginState, RequestedLoginState] on success',
       build: () {
-        mockLoginRepository.result = const Right(UserLoginData(
-          token: 'abc',
-          userId: '1',
-          name: 'User',
-          email: 'user@test.com',
-        ));
+        mockLoginRepository.result = const Right(_tUserLoginData);
         return LoginBloc(
           loginRepository: mockLoginRepository,
           sessionHelper: mockSessionHelper,
         );
       },
-      act: (bloc) => bloc.add(const RequestLoginEvent(email: 'test', password: '123')),
+      act: (bloc) =>
+          bloc.add(const RequestLoginEvent(email: _tEmail, password: _tPassword)),
       expect: () => [
         isA<RequestingLoginState>(),
         isA<RequestedLoginState>().having(
-          (state) => state.user,
+          (s) => s.user,
           'user',
-          const UserLoginData(
-            token: 'abc',
-            userId: '1',
-            name: 'User',
-            email: 'user@test.com',
-          ),
+          _tUserLoginData,
         ),
       ],
       verify: (_) {
         expect(mockSessionHelper.initializedData?.token, 'abc');
+        expect(mockSessionHelper.initializedData?.userId, '1');
       },
     );
 
@@ -95,11 +124,12 @@ void main() {
           sessionHelper: mockSessionHelper,
         );
       },
-      act: (bloc) => bloc.add(const RequestLoginEvent(email: 'test', password: '123')),
+      act: (bloc) =>
+          bloc.add(const RequestLoginEvent(email: _tEmail, password: _tPassword)),
       expect: () => [
         isA<RequestingLoginState>(),
         isA<ErrorRequestLoginState>().having(
-          (state) => state.errorStateMessage,
+          (s) => s.errorStateMessage,
           'message',
           ErrorStateType.timeout.message,
         ),
@@ -115,11 +145,12 @@ void main() {
           sessionHelper: mockSessionHelper,
         );
       },
-      act: (bloc) => bloc.add(const RequestLoginEvent(email: 'test', password: '123')),
+      act: (bloc) =>
+          bloc.add(const RequestLoginEvent(email: _tEmail, password: _tPassword)),
       expect: () => [
         isA<RequestingLoginState>(),
         isA<ErrorRequestLoginState>().having(
-          (state) => state.errorStateMessage,
+          (s) => s.errorStateMessage,
           'message',
           ErrorStateType.sessionExpired.message,
         ),
@@ -127,7 +158,7 @@ void main() {
     );
 
     blocTest<LoginBloc, LoginState>(
-      'should emit [RequestingLoginState, ErrorRequestLoginState] on generic failure',
+      'should emit [RequestingLoginState, ErrorRequestLoginState] on generic Left(null)',
       build: () {
         mockLoginRepository.result = const Left(null);
         return LoginBloc(
@@ -135,15 +166,56 @@ void main() {
           sessionHelper: mockSessionHelper,
         );
       },
-      act: (bloc) => bloc.add(const RequestLoginEvent(email: 'test', password: '123')),
+      act: (bloc) =>
+          bloc.add(const RequestLoginEvent(email: _tEmail, password: _tPassword)),
       expect: () => [
         isA<RequestingLoginState>(),
         isA<ErrorRequestLoginState>().having(
-          (state) => state.errorStateMessage,
+          (s) => s.errorStateMessage,
           'message',
           ErrorStateType.genericError.message,
         ),
       ],
+    );
+
+    blocTest<LoginBloc, LoginState>(
+      'should emit [RequestingLoginState, ErrorRequestLoginState] '
+      'when UserLoginData has a LoginErrorType error',
+      build: () {
+        mockLoginRepository.result = const Right(
+          UserLoginData(
+            token: '',
+            userId: '',
+            name: '',
+            email: '',
+            error: LoginErrorType.invalidUserOrPassword,
+          ),
+        );
+        return LoginBloc(
+          loginRepository: mockLoginRepository,
+          sessionHelper: mockSessionHelper,
+        );
+      },
+      act: (bloc) =>
+          bloc.add(const RequestLoginEvent(email: _tEmail, password: _tPassword)),
+      expect: () => [
+        isA<RequestingLoginState>(),
+        isA<ErrorRequestLoginState>().having(
+          (s) => s.errorStateMessage,
+          'message',
+          LoginErrorType.invalidUserOrPassword.errorMessage,
+        ),
+      ],
+    );
+
+    blocTest<LoginBloc, LoginState>(
+      'should emit [LoginInitialState] on ResetLoginEvent',
+      build: () => LoginBloc(
+        loginRepository: mockLoginRepository,
+        sessionHelper: mockSessionHelper,
+      ),
+      act: (bloc) => bloc.add(const ResetLoginEvent()),
+      expect: () => [isA<LoginInitialState>()],
     );
   });
 }
