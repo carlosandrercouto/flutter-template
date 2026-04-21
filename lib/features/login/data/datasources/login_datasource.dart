@@ -1,68 +1,72 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../../core/enums/api_response_status_enum.dart';
+import '../../../../core/enums/login_error_type_enum.dart';
 import '../../../../core/errors/errors_export.dart';
-import '../../../../core/services/api_service.dart';
-import '../../../../core/services/apis/api_endpoints.dart';
-import '../../../../core/entities/api_response.dart';
+import '../../../../core/helpers/firebase_auth_helper.dart';
 
 import '../../domain/entities/entities_export.dart';
 import '../../domain/repositories/login_repository.dart';
 import '../models/models_export.dart';
 
-/// Datasource de login.
+/// Datasource de login via Firebase Authentication.
 ///
 /// Arquitetura do Datasource:
 /// - Extends o repositório abstrato diretamente
-/// - Recebe [ApiService] como dependência injetável no construtor
-/// - Cada método: seleciona o endpoint no enum → chama _apiService (ou mock) →
-///   trata [ApiResponseStatus] → mapeia com o model
+/// - Recebe [FirebaseAuthHelper] como dependência injetável no construtor
+/// - Mapeia [FirebaseAuthException.code] para [LoginErrorType]
+/// - Usa Streams do Firebase apenas para autenticação; demais chamadas
+///   à API ainda utilizam [ApiService] se necessário em outros datasources.
 class LoginDatasource extends LoginRepository {
-  final ApiService _apiService;
+  final FirebaseAuthHelper _authHelper;
 
-  LoginDatasource({ApiService? apiService})
-    : _apiService = apiService ?? ApiService();
+  LoginDatasource({FirebaseAuthHelper? authHelper})
+    : _authHelper = authHelper ?? FirebaseAuthHelper.instance;
 
   @override
   Future<Either<Failure?, UserLoginData>> postRequestLogin({
     required String email,
     required String password,
   }) async {
-    final ApiEndpoints endpoint = ApiEndpoints.postLogin;
+    try {
+      final credential = await _authHelper.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    final ApiResponse apiResponse = await _apiService(
-      endpoint: endpoint.url,
-      request: ApiRequest(
-        requestType: endpoint.requestType,
-        body: {'email': email, 'password': password},
-      ),
-      devLog: 'LoginDatasource: postRequestLogin',
-      currentStackTrace: StackTrace.current,
-    );
+      final idToken = await _authHelper.getIdToken();
 
-    if (apiResponse.status == ApiResponseStatus.success) {
-      try {
-        final UserLoginData result = UserLoginDataModel.fromMap(
-          map: apiResponse.result!,
-        );
-        return Future.value(Right(result));
-      } catch (error) {
-        log(
-          'Error: ${error.toString()}',
-          name: 'LoginDatasource: postRequestLogin',
-        );
-
-        /// TODO: Implementar gravação de log de erro no Crashlytics ou simular
-        return Future.value(const Left(null));
+      if (idToken == null) {
+        log('idToken is null after login', name: 'LoginDatasource');
+        return const Left(null);
       }
-    } else if (apiResponse.status == ApiResponseStatus.errorTimeout) {
-      return Future.value(Left(TimeoutFailure()));
-    } else if (apiResponse.status == ApiResponseStatus.errorSessionExpired) {
-      return Future.value(Left(SessionExpiredFailure()));
-    }
 
-    return Future.value(const Left(null));
+      final result = UserLoginDataModel.fromFirebase(
+        credential: credential,
+        idToken: idToken,
+      );
+
+      return Right(result);
+    } on FirebaseAuthException catch (e) {
+      log(
+        'FirebaseAuthException: ${e.code} — ${e.message}',
+        name: 'LoginDatasource',
+      );
+
+      return Right(
+        UserLoginData.empty().copyWith(
+          error: LoginErrorData(errorType: LoginErrorType.fromFirebaseCode(e.code)),
+        ),
+      );
+    } catch (error, stackTrace) {
+      log(
+        'Unexpected error: $error',
+        name: 'LoginDatasource',
+        stackTrace: stackTrace,
+      );
+      return const Left(null);
+    }
   }
 }

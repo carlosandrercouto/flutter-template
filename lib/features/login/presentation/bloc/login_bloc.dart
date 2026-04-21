@@ -76,7 +76,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (data.error != null) {
           emit(
             ErrorRequestLoginState(
-              errorStateMessage: data.error!.errorType.apiMessage,
+              errorStateMessage: data.error!.errorMessage,
             ),
           );
         } else {

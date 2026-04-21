@@ -50,7 +50,9 @@ class SessionHelper {
 
     log(userLoginData.userId, name: '👤 SessionHelper: userId');
     log(
-      userLoginData.token.isNotEmpty ? '[token set]' : '[token empty]',
+      userLoginData.token.isNotEmpty
+          ? '${userLoginData.token}'
+          : '[token empty]',
       name: '👤 SessionHelper: token',
     );
   }

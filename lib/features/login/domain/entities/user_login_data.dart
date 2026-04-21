@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_template/core/enums/login_error_type_enum.dart';
 
 import 'login_error_data.dart';
 
@@ -8,23 +9,15 @@ class UserLoginData extends Equatable {
   final String userId;
   final String name;
   final String email;
-  final LoginErrorData? error;
+  final LoginErrorType? error;
 
   const UserLoginData({
     required this.token,
     required this.userId,
     required this.name,
     required this.email,
-    this.error,
+    required this.error,
   });
-
-  factory UserLoginData.empty() => const UserLoginData(
-    token: '',
-    userId: '',
-    name: '',
-    email: '',
-    error: null,
-  );
 
   bool get isAuthenticated => token.isNotEmpty && userId.isNotEmpty;
 
@@ -33,7 +26,7 @@ class UserLoginData extends Equatable {
     String? userId,
     String? name,
     String? email,
-    LoginErrorData? error,
+    LoginErrorType? error,
   }) {
     return UserLoginData(
       token: token ?? this.token,

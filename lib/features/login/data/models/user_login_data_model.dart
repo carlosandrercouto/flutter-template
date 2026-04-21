@@ -1,10 +1,12 @@
-import '../../domain/entities/user_login_data.dart';
-import 'login_error_data_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-/// Model de dados do usuário após login.
+import '../../../../core/enums/enums_export.dart';
+import '../../domain/entities/user_login_data.dart';
+
+/// Model de dados do usuário após login Firebase.
 ///
-/// construtor privado [_internal] com super nos parâmetros +
-/// factory [fromMap] responsável pelo parsing do map da API.
+/// Construtor privado [_internal] com super nos parâmetros +
+/// factory [fromFirebase] responsável pelo mapeamento do [UserCredential].
 class UserLoginDataModel extends UserLoginData {
   const UserLoginDataModel._internal({
     required super.token,
@@ -14,15 +16,29 @@ class UserLoginDataModel extends UserLoginData {
     super.error,
   }) : super();
 
-  factory UserLoginDataModel.fromMap({required Map<String, dynamic> map}) {
+  /// Cria um [UserLoginDataModel] a partir de uma [UserCredential] e do [idToken] JWT.
+  factory UserLoginDataModel.fromFirebase({
+    required UserCredential userCredential,
+    required String idToken,
+  }) {
+    final user = userCredential.user!;
     return UserLoginDataModel._internal(
-      token: map['token'] ?? '',
-      userId: map['userId'] ?? '',
-      name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      error: map['error'] != null
-          ? LoginErrorDataModel.fromMap(map: map)
-          : null,
+      token: idToken,
+      userId: user.uid,
+      name: user.displayName ?? '',
+      email: user.email ?? '',
+    );
+  }
+
+  factory UserLoginDataModel.fromFirebaseError({
+    required String? error,
+  }) {
+    return UserLoginDataModel._internal(
+      token: '',
+      userId: '',
+      name: '',
+      email: '',
+      error: error != null ? LoginErrorType.fromString(error) : null,
     );
   }
 }
