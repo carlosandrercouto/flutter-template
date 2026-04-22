@@ -37,7 +37,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.api = void 0;
-const functions = __importStar(require("firebase-functions"));
 const admin = __importStar(require("firebase-admin"));
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
@@ -47,27 +46,53 @@ admin.initializeApp();
 const app = (0, express_1.default)();
 // Configure CORS middleware
 app.use((0, cors_1.default)({ origin: true }));
-// Setup route: GET /v1/mass-data
-app.get("/v1/mass-data", async (req, res) => {
+// =============================================================================
+// Auth Middleware
+// =============================================================================
+/**
+ * Middleware que valida o Firebase ID Token enviado no header Authorization.
+ *
+ * Espera o formato: `Authorization: Bearer <idToken>`
+ * Rejeita com 401 se o header estiver ausente, malformado ou com token inválido.
+ */
+async function verifyToken(req, res, next) {
+    var _a;
+    const authHeader = (_a = req.headers.authorization) !== null && _a !== void 0 ? _a : "";
+    if (!authHeader.startsWith("Bearer ")) {
+        res
+            .status(401)
+            .json({ error: "Missing or invalid Authorization header." });
+        return;
+    }
+    const idToken = authHeader.split("Bearer ")[1];
     try {
-        // Get default bucket
+        await admin.auth().verifyIdToken(idToken);
+        next();
+    }
+    catch (error) {
+        console.error("Token verification failed:", error);
+        res.status(401).json({ error: "Unauthorized: invalid or expired token." });
+    }
+}
+// =============================================================================
+// Routes
+// =============================================================================
+// Setup route: GET /mass-data (autenticado via Firebase ID Token)
+app.get("/mass-data", verifyToken, async (req, res) => {
+    try {
         const bucket = admin.storage().bucket();
         const file = bucket.file("data.json");
-        // Check if file exists to prevent stream error crashing the app
         const [exists] = await file.exists();
         if (!exists) {
             res.status(404).json({ error: "File data.json not found in the storage bucket." });
             return;
         }
-        // Set Header
         res.setHeader("Content-Type", "application/json");
-        // Pipe stream to avoid memory heap issues
         const readStream = file.createReadStream();
-        // Handle stream errors
         readStream.on("error", (err) => {
             console.error("Stream error:", err);
             if (!res.headersSent) {
-                res.status(500).json({ error: "Failed to read data from storage" });
+                res.status(500).json({ error: "Failed to read data from storage." });
             }
         });
         readStream.pipe(res);
@@ -75,10 +100,40 @@ app.get("/v1/mass-data", async (req, res) => {
     catch (error) {
         console.error("Error processing request:", error);
         if (!res.headersSent) {
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error." });
         }
     }
 });
-// Export Express API as a Firebase Function
-exports.api = functions.https.onRequest(app);
+// Setup route: GET /home/transactions (autenticado via Firebase ID Token)
+app.get("/home/transactions", verifyToken, async (req, res) => {
+    try {
+        const bucket = admin.storage().bucket();
+        const file = bucket.file("transaction_data.json");
+        const [exists] = await file.exists();
+        if (!exists) {
+            res
+                .status(404)
+                .json({ error: "File transaction_data.json not found in the storage bucket." });
+            return;
+        }
+        res.setHeader("Content-Type", "application/json");
+        const readStream = file.createReadStream();
+        readStream.on("error", (err) => {
+            console.error("Stream error:", err);
+            if (!res.headersSent) {
+                res.status(500).json({ error: "Failed to read data from storage." });
+            }
+        });
+        readStream.pipe(res);
+    }
+    catch (error) {
+        console.error("Error processing request:", error);
+        if (!res.headersSent) {
+            res.status(500).json({ error: "Internal server error." });
+        }
+    }
+});
+// Export Express API as a Firebase Function (Gen 2)
+const https_1 = require("firebase-functions/v2/https");
+exports.api = (0, https_1.onRequest)({ invoker: "public" }, app);
 //# sourceMappingURL=index.js.map
