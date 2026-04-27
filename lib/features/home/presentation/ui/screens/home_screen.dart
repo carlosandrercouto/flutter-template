@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/enums/error_state_type_enum.dart';
 import '../../../../../core/helpers/session_helper.dart';
+import '../../../../../core/routes/routes_list.dart';
 import '../../../domain/entities/entities_export.dart';
 import '../../bloc/home_bloc.dart';
 import '../widgets/widgets_export.dart';
@@ -129,12 +130,12 @@ class _HomeScreenState extends State<HomeScreen> {
   // ===================================================================================================================
 
   Widget _buildTransactionListTitle(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          const Text(
             'Últimas transações',
             style: TextStyle(
               color: Colors.white,
@@ -143,12 +144,19 @@ class _HomeScreenState extends State<HomeScreen> {
               letterSpacing: -0.2,
             ),
           ),
-          Text(
-            'Ver todas',
-            style: TextStyle(
-              color: Color(0xFF6C63FF),
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
+          GestureDetector(
+            onTap: () {
+              Navigator.of(
+                context,
+              ).pushNamed(RoutesList.ClientsScreen.routeName);
+            },
+            child: const Text(
+              'Ver Clientes',
+              style: TextStyle(
+                color: Color(0xFF6C63FF),
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],

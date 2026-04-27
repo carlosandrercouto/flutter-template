@@ -5,7 +5,10 @@ enum RoutesList {
   LoginScreen('LoginScreen'),
 
   // Home
-  HomeScreen('HomeScreen');
+  HomeScreen('HomeScreen'),
+
+  // Feature Clients
+  ClientsScreen('ClientsScreen');
 
   // Não altere os parametros
   final String routeName;

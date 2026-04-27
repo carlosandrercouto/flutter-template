@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:isolate';
 import 'dart:developer' as dev;
 import 'dart:io';
 
@@ -56,6 +57,7 @@ class ApiService {
     required String devLog,
     required StackTrace currentStackTrace,
     int apiRequestTimeout = 30,
+    bool useIsolateForDecode = false,
   }) async {
     if (_envHelper.useMock && _mockHelper.shouldMockRoute(endpoint)) {
       return _mockHelper.call(
@@ -92,7 +94,9 @@ class ApiService {
         timeoutSeconds: apiRequestTimeout,
       );
 
-      final dynamic decoded = jsonDecode(response.body);
+      final dynamic decoded = useIsolateForDecode
+          ? await Isolate.run(() => jsonDecode(response.body))
+          : jsonDecode(response.body);
       final Map<String, dynamic> result = decoded is Map<String, dynamic>
           ? decoded
           : {'data': decoded};

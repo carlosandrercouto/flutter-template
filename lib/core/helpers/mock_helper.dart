@@ -32,6 +32,9 @@ class MockHelper {
 
     // ── Home ───────────────────────────────────────────────────────────────
     '/home/transactions': _handleGetTransactions,
+
+    // ── Clients ────────────────────────────────────────────────────────────
+    '/mass-data': _handleGetMassData,
   };
 
   /// Verifica se a rota especificada possui um mock cadastrado.
@@ -166,6 +169,42 @@ class MockHelper {
             'date': '2024-03-09T14:32:00Z',
           },
         ],
+      },
+    );
+  }
+
+  static ApiResponse _handleGetMassData(Map<String, dynamic> body) {
+    return ApiResponse(
+      status: ApiResponseStatus.success,
+      result: {
+        'data': [
+          {
+            "_id": "mock-001",
+            "index": 0,
+            "guid": "mock-guid",
+            "isActive": true,
+            "balance": "\$1,000.00",
+            "name": "Mock Client 1",
+            "picture": "https://picsum.photos/200",
+            "age": 30,
+            "about": "Mock description",
+            "registered": "Sat Mar 22 2014",
+            "tags": ["mock", "tag"],
+          },
+          {
+            "_id": "mock-002",
+            "index": 1,
+            "guid": "mock-guid-2",
+            "isActive": false,
+            "balance": "\$500.00",
+            "name": "Mock Client 2",
+            "picture": "",
+            "age": 25,
+            "about": "Mock description 2",
+            "registered": "Sun Mar 23 2014",
+            "tags": ["mock"],
+          }
+        ]
       },
     );
   }

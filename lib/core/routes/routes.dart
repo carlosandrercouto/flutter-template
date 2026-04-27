@@ -8,6 +8,8 @@ import '../../features/home/presentation/bloc/home_bloc.dart';
 import '../../features/home/presentation/ui/screens/home_screen.dart';
 import '../../features/login/presentation/bloc/login_bloc.dart';
 import '../../features/login/presentation/ui/screens/login_screen.dart';
+import '../../features/clients/presentation/bloc/clients_bloc.dart';
+import '../../features/clients/presentation/ui/screens/clients_screen.dart';
 import 'routes_list.dart';
 
 Map<String, dynamic> routes = <String, dynamic>{
@@ -21,6 +23,12 @@ Map<String, dynamic> routes = <String, dynamic>{
   RoutesList.HomeScreen.routeName: (_) => BlocProvider(
     create: (_) => HomeBloc(),
     child: const HomeScreen(),
+  ),
+
+  // Feature Clients
+  RoutesList.ClientsScreen.routeName: (_) => BlocProvider(
+    create: (_) => ClientsBloc(),
+    child: const ClientsScreen(),
   ),
 };
 

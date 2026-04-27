@@ -23,6 +23,9 @@ enum ApiEndpoints {
   // Feature home : Transações
   // ===================================================================================================================
   getTransactions(ApiRequestType.GET, '/home/transactions'),
+  // Feature Clients : Mass Data
+  // ===================================================================================================================
+  getMassData(ApiRequestType.GET, '/mass-data'),
   ;
 
   // Não altere os parâmetros
