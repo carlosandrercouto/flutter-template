@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:flutter_template/core/helpers/secure_storage_helper/secure_storage_helper.dart';
+import 'package:get_it/get_it.dart' show GetIt;
+
 import '../../features/login/domain/entities/user_login_data.dart';
 
 /// Gerencia os dados da sessão do usuário em memória.
@@ -11,15 +14,14 @@ import '../../features/login/domain/entities/user_login_data.dart';
 ///
 /// Exemplo de uso no DataSource:
 /// ```dart
-/// final token = SessionHelper.instance.token;
+/// final token = GetIt.instance<SessionHelper>().token;
 /// ```
 class SessionHelper {
-  SessionHelper._();
+  final SecureStorageHelper _secureStorageHelper;
 
-  static final SessionHelper _instance = SessionHelper._();
-
-  /// Instância singleton do [SessionHelper].
-  static SessionHelper get instance => _instance;
+  SessionHelper({SecureStorageHelper? secureStorageHelper})
+    : _secureStorageHelper =
+          secureStorageHelper ?? GetIt.instance<SecureStorageHelper>();
 
   late UserLoginData _userLoginData;
 
@@ -47,6 +49,14 @@ class SessionHelper {
   /// antes de qualquer navegação ou chamada autenticada à API.
   void initUserLoginData({required UserLoginData userLoginData}) {
     _userLoginData = userLoginData;
+    _secureStorageHelper.saveData(
+      key: SecureStorageHelperKeys.userToken,
+      value: _userLoginData.token,
+    );
+    _secureStorageHelper.saveData(
+      key: SecureStorageHelperKeys.userId,
+      value: _userLoginData.userId,
+    );
 
     log(userLoginData.userId, name: '👤 SessionHelper: userId');
     log(

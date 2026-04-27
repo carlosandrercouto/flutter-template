@@ -11,10 +11,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 ///
 /// Arquivo de configuração: `.env` na raiz do projeto.
 class EnvironmentHelper {
-  late DotEnv _dotEnv;
-
-  static final EnvironmentHelper _instance = EnvironmentHelper();
-  static EnvironmentHelper get instance => _instance;
+  final DotEnv _dotEnv;
+  EnvironmentHelper({DotEnv? dotEnv}) : _dotEnv = dotEnv ?? dotenv;
 
   late String _apiBaseUrl;
   late bool _useMock;
@@ -26,8 +24,6 @@ class EnvironmentHelper {
   /// await EnvironmentHelper.instance.init();
   /// ```
   Future<void> init({String? envFile, DotEnv? flutterDotEnv}) async {
-    _dotEnv = flutterDotEnv ?? dotenv;
-
     try {
       await _dotEnv.load(fileName: envFile ?? '.env');
       _apiBaseUrl = _getEnvData(fromKey: 'API_BASE_URL');

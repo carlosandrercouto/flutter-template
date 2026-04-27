@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../../../core/enums/error_state_type_enum.dart';
 import '../../../../../core/helpers/session_helper.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late HomeBloc _homeBloc;
-  final String _userName = SessionHelper.instance.userName;
+  final String _userName = GetIt.instance<SessionHelper>().userName;
 
   @override
   void initState() {

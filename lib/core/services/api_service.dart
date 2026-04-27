@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:developer' as dev;
 import 'dart:io';
 
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import '../enums/api_request_type_enum.dart';
@@ -33,10 +34,10 @@ class ApiService {
     http.Client? httpClient,
     MockHelper? mockHelper,
     SessionHelper? sessionHelper,
-  }) : _envHelper = envHelper ?? EnvironmentHelper.instance,
+  }) : _envHelper = envHelper ?? GetIt.instance<EnvironmentHelper>(),
        _httpClient = httpClient ?? http.Client(),
        _mockHelper = mockHelper ?? MockHelper.instance,
-       _sessionHelper = sessionHelper ?? SessionHelper.instance;
+       _sessionHelper = sessionHelper ?? GetIt.instance<SessionHelper>();
 
   static ApiService get instance => ApiService();
 

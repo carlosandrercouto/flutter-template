@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../../core/enums/error_state_type_enum.dart';
 import '../../../../core/errors/errors_export.dart';
@@ -25,10 +26,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository _loginRepository;
   final SessionHelper _sessionHelper;
 
-  LoginBloc({LoginRepository? loginRepository, SessionHelper? sessionHelper})
-    : _loginRepository = loginRepository ?? LoginDatasource(),
-      _sessionHelper = sessionHelper ?? SessionHelper.instance,
-      super(LoginInitialState()) {
+  LoginBloc({
+    LoginRepository? loginRepository,
+    SessionHelper? sessionHelper,
+  }) : _loginRepository = loginRepository ?? LoginDatasource(),
+       _sessionHelper = sessionHelper ?? GetIt.instance<SessionHelper>(),
+       super(LoginInitialState()) {
     on<RequestLoginEvent>(_onRequestLogin);
     on<ResetLoginEvent>(_onResetLogin);
   }
@@ -81,6 +84,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           );
         } else {
           _sessionHelper.initUserLoginData(userLoginData: data);
+
           emit(RequestedLoginState(user: data));
         }
       },
