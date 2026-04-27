@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_template/core/enums/login_error_type_enum.dart';
 import 'package:flutter_template/core/errors/failure.dart';

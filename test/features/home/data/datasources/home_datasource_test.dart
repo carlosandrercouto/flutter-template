@@ -18,6 +18,7 @@ class MockApiService implements ApiService {
     required String devLog,
     required StackTrace currentStackTrace,
     int apiRequestTimeout = 30,
+    bool useIsolateForDecode = false,
   }) async {
     lastEndpoint = endpoint;
     return result ?? ApiResponse(status: ApiResponseStatus.errorGeneric);
