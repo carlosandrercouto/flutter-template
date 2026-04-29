@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/enums/api_response_status_enum.dart';
 import 'package:flutter_template/core/errors/errors_export.dart';
 import 'package:flutter_template/core/services/api_service.dart';
@@ -55,7 +54,7 @@ void main() {
                 'about': 'About',
                 'registered': '2023-01-01',
                 'tags': ['tag1'],
-              }
+              },
             ],
           },
         );
@@ -82,7 +81,9 @@ void main() {
           status: ApiResponseStatus.success,
           result: {
             'data': [
-              {'invalido': 'sim'} // Sem chaves necessárias vai falhar no parser ou não dependendo do fromMap
+              {
+                'invalido': 'sim',
+              }, // Sem chaves necessárias vai falhar no parser ou não dependendo do fromMap
             ],
           },
         );
@@ -90,7 +91,8 @@ void main() {
         // Actually if fromMap is robust it just uses defaults. Let's send something that causes error
         mockApiService.result = ApiResponse(
           status: ApiResponseStatus.success,
-          result: null, // this will throw since it tries to get ['data'] on null
+          result:
+              null, // this will throw since it tries to get ['data'] on null
         );
 
         final result = await datasource.getClientsList();

@@ -1,8 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_template/core/enums/api_response_status_enum.dart';
 import 'package:flutter_template/core/errors/errors_export.dart';
 import 'package:flutter_template/core/services/api_service.dart';
-import 'package:flutter_template/core/services/apis/api_endpoints.dart';
 import 'package:flutter_template/core/entities/api_response.dart';
 import 'package:flutter_template/features/clients/data/datasources/clients_datasource.dart';
 import 'package:flutter_template/features/clients/data/models/clients_model.dart';
@@ -57,7 +55,7 @@ void main() {
                 'about': 'About',
                 'registered': 'date',
                 'tags': [],
-              }
+              },
             ],
           },
         );
@@ -129,8 +127,8 @@ void main() {
     test(
       'deve lidar com Offline simulado retornando erro (Offline)',
       () async {
-        // No momento ClientsDatasource não intercepta offline de forma explícita, 
-        // mas devemos validar o comportamento genérico. 
+        // No momento ClientsDatasource não intercepta offline de forma explícita,
+        // mas devemos validar o comportamento genérico.
         // Como o Offline normalmente retorna um ApiResponse de Erro (offline), o DS vai retornar left(null).
         mockApiService.result = ApiResponse(
           status: ApiResponseStatus.errorGeneric,
@@ -140,7 +138,10 @@ void main() {
 
         expect(result.isLeft(), isTrue);
         result.fold(
-          (l) => expect(l, isNull), // ou OfflineFailure se o datasource fosse atualizado
+          (l) => expect(
+            l,
+            isNull,
+          ), // ou OfflineFailure se o datasource fosse atualizado
           (r) => fail('Deveria ser Left'),
         );
       },
