@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/core/localization/app_localizations_extension.dart';
 
 class LoginHeaderWidget extends StatelessWidget {
   const LoginHeaderWidget({super.key});
@@ -20,9 +21,9 @@ class LoginHeaderWidget extends StatelessWidget {
           child: const Icon(Icons.bolt_rounded, color: Colors.white, size: 28),
         ),
         const SizedBox(height: 24),
-        const Text(
-          'Bem-vindo de volta',
-          style: TextStyle(
+        Text(
+          context.translate('welcome_back'),
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 28,
             fontWeight: FontWeight.w700,
@@ -31,7 +32,7 @@ class LoginHeaderWidget extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Entre com suas credenciais para acessar.',
+          context.translate('enter_with_your_credentials_to_login'),
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.5),
             fontSize: 15,

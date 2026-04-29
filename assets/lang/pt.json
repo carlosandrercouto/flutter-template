@@ -1,0 +1,12 @@
+{
+    "enter": "Entrar",
+    "test_credentials": "Credenciais de teste",
+    "enter_the_email": "Informe o e-mail",
+    "enter_the_password": "Informe a senha",
+    "email_invalid": "E-mail inválido",
+    "password_invalid": "Senha deve ter no mínimo 6 caracteres",
+    "password": "Senha",
+    "email": "E-mail",
+    "welcome_back": "Bem-vindo de volta",
+    "enter_with_your_credentials_to_login": "Entre com suas credenciais para acessar."
+}

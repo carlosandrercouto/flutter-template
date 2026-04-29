@@ -1,0 +1,12 @@
+{
+    "enter": "To enter",
+    "test_credentials": "Test credentials",
+    "enter_the_email": "Enter the email",
+    "enter_the_password": "Enter the password",
+    "email_invalid": "Email invalid",
+    "password_invalid": "Password must be at least 6 characters",
+    "password": "Password",
+    "email": "E-mail",
+    "welcome_back": "Welcome back",
+    "enter_with_your_credentials_to_login": "Enter with your credentials to login"
+}

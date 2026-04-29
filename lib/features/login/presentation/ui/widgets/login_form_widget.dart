@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_template/core/localization/app_localizations_extension.dart';
+import 'package:flutter_template/core/widgets/locale_selector.dart';
 
 class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({
@@ -42,14 +44,22 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   }
 
   String? _validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Informe o e-mail';
-    if (!value.contains('@')) return 'E-mail inválido';
+    if (value == null || value.trim().isEmpty) {
+      return context.translate('enter_the_email', listen: false);
+    }
+    if (!value.contains('@')) {
+      return context.translate('email_invalid', listen: false);
+    }
     return null;
   }
 
   String? _validatePassword(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Informe a senha';
-    if (value.length < 6) return 'Senha deve ter no mínimo 6 caracteres';
+    if (value == null || value.trim().isEmpty) {
+      return context.translate('enter_the_password', listen: false);
+    }
+    if (value.length < 6) {
+      return context.translate('password_invalid', listen: false);
+    }
     return null;
   }
 
@@ -59,10 +69,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       key: _formKey,
       child: Column(
         children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: const LocaleSelector(),
+          ),
+          const SizedBox(height: 20),
           _buildInputField(
             controller: _emailController,
             focusNode: _emailFocus,
-            label: 'E-mail',
+            label: context.translate('email'),
             hint: 'user@test.com',
             icon: Icons.email_outlined,
             keyboardType: TextInputType.emailAddress,
@@ -76,7 +91,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           _buildInputField(
             controller: _passwordController,
             focusNode: _passwordFocus,
-            label: 'Senha',
+            label: context.translate('password'),
             hint: '••••••',
             icon: Icons.lock_outline,
             obscureText: _obscurePassword,
@@ -214,9 +229,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               borderRadius: BorderRadius.circular(14),
             ),
           ),
-          child: const Text(
-            'Entrar',
-            style: TextStyle(
+          child: Text(
+            context.translate('enter'),
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -233,7 +248,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       child: Column(
         children: [
           Text(
-            'Credenciais de teste:',
+            '${context.translate('test_credentials')}:',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.3),
               fontSize: 12,
@@ -241,7 +256,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           ),
           const SizedBox(height: 4),
           Text(
-            'usuario@teste.com / 123456',
+            'carlosandrecouto@live.com / 12345678',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.45),
               fontSize: 12,

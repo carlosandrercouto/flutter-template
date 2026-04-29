@@ -16,35 +16,35 @@ class SharedPreferencesHelper {
     required SharedPreferencesHelperKeys key,
     required bool value,
   }) async {
-    return _sharedPreferences.setBool(key.keyName, value);
+    return await _sharedPreferences.setBool(key.keyName, value);
   }
 
   Future<bool> saveDoubleValue({
     required SharedPreferencesHelperKeys key,
     required double value,
   }) async {
-    return _sharedPreferences.setDouble(key.keyName, value);
+    return await _sharedPreferences.setDouble(key.keyName, value);
   }
 
   Future<bool> saveIntValue({
     required SharedPreferencesHelperKeys key,
     required int value,
   }) async {
-    return _sharedPreferences.setInt(key.keyName, value);
+    return await _sharedPreferences.setInt(key.keyName, value);
   }
 
   Future<bool> saveListStringValue({
     required SharedPreferencesHelperKeys key,
     required List<String> value,
   }) async {
-    return _sharedPreferences.setStringList(key.keyName, value);
+    return await _sharedPreferences.setStringList(key.keyName, value);
   }
 
   Future<bool> saveStringValue({
     required SharedPreferencesHelperKeys key,
     required String value,
   }) async {
-    return _sharedPreferences.setString(key.keyName, value);
+    return await _sharedPreferences.setString(key.keyName, value);
   }
 
   // Métodos get
