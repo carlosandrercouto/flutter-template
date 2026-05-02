@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:developer' as dev;
 import 'dart:io';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -115,7 +116,10 @@ class ApiService {
       } else {
         dev.log('Error [${response.statusCode}]: $result', name: devLog);
 
-        /// TODO: Implementar gravação de log de erro no Crashlytics ou simular
+        FirebaseCrashlytics.instance.recordError(
+          Exception('API error: ${response.statusCode}'),
+          currentStackTrace,
+        );
         return ApiResponse(
           status: ApiResponseStatus.errorStatusCode,
           result: result,
@@ -130,12 +134,15 @@ class ApiService {
     } on FormatException {
       dev.log('FormatException (bad JSON)', name: devLog);
 
-      /// TODO: Implementar gravação de log de erro no Crashlytics ou simular
+      FirebaseCrashlytics.instance.recordError(
+        "FormatException",
+        currentStackTrace,
+      );
       return ApiResponse(status: ApiResponseStatus.errorJsonDecode);
-    } catch (e) {
-      dev.log('Unknown error: $e', name: devLog);
+    } catch (error) {
+      dev.log('Unknown error: $error', name: devLog);
 
-      /// TODO: Implementar gravação de log de erro no Crashlytics ou simular
+      FirebaseCrashlytics.instance.recordError(error, currentStackTrace);
       return ApiResponse(status: ApiResponseStatus.errorGeneric);
     }
   }

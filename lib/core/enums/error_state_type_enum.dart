@@ -1,10 +1,9 @@
 enum ErrorStateType {
-  timeout(message: 'Tempo limite excedido. Verifique sua conexão.'),
-  noInternetConnection(message: 'Sem conexão com a internet.'),
-  sessionExpired(message: 'Sessão expirada. Faça login novamente.'),
-  genericError(message: 'Ocorreu um erro inesperado.');
+  timeout(message: 'error_timeout'),
+  noInternetConnection(message: 'error_no_internet_connection'),
+  sessionExpired(message: 'error_session_expired'),
+  genericError(message: 'error_generic');
 
-  /// TODO: Substituir por key_name posteriormente, após implementação de internacionalização Mensagem de erro da API.
   final String message;
 
   const ErrorStateType({required this.message});

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_template/core/localization/app_localizations_extension.dart';
 import 'package:flutter_template/features/clients/domain/entities/client_item_entity.dart';
 
 import '../../bloc/clients_bloc.dart';
@@ -31,9 +32,9 @@ class _ClientsScreenState extends State<ClientsScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF0D0F14),
       appBar: AppBar(
-        title: const Text(
-          'Clientes',
-          style: TextStyle(
+        title: Text(
+          context.translate('clients'),
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w700,
@@ -73,17 +74,15 @@ class _ClientsScreenState extends State<ClientsScreen> {
   // ===================================================================================================================
 
   Widget _loadingClientsListState() {
-    // Utilizamos o CupertinoActivityIndicator para demonstrar que
-    // a animação NÃO congela enquanto o Isolate faz o parse de 65MB
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CupertinoActivityIndicator(radius: 16, color: Color(0xFF6C63FF)),
-          SizedBox(height: 16),
+          const CupertinoActivityIndicator(radius: 16, color: Color(0xFF6C63FF)),
+          const SizedBox(height: 16),
           Text(
-            'Processando 1.6M linhas no Isolate...',
-            style: TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
+            context.translate('processing_isolates'),
+            style: const TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
           ),
         ],
       ),
@@ -92,10 +91,10 @@ class _ClientsScreenState extends State<ClientsScreen> {
 
   Widget _loadedClientsListState(List<ClientItemEntity> clients) {
     if (clients.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'Nenhum cliente encontrado.',
-          style: TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
+          context.translate('no_clients_found'),
+          style: const TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
         ),
       );
     }
@@ -119,7 +118,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                state.errorStateType.message,
+                context.translate(state.errorStateType.message),
                 style: const TextStyle(
                   color: Color(0xFF9BA3B8),
                   fontSize: 14,

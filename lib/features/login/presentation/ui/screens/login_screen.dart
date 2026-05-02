@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_template/core/localization/app_localizations_extension.dart';
 
 import '../../../../../core/routes/routes_list.dart';
 import '../../bloc/login_bloc.dart';
@@ -38,7 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
       ).pushReplacementNamed(RoutesList.HomeScreen.routeName);
     } else if (state is ErrorRequestLoginState) {
       _dismissLoading();
-      _showSnackbar(context, state.errorStateMessage);
+      _showSnackbar(
+        context,
+        context.translate(
+          state.errorStateMessage,
+          listen: false,
+        ),
+      );
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_template/core/localization/app_localizations_extension.dart';
 import 'package:intl/intl.dart';
 
 import '../../../domain/entities/balance_entity.dart';
@@ -34,9 +35,9 @@ class BalanceCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Saldo disponível',
-              style: TextStyle(
+            Text(
+              context.translate('available_balance'),
+              style: const TextStyle(
                 color: Colors.white70,
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
@@ -59,7 +60,7 @@ class BalanceCardWidget extends StatelessWidget {
               children: [
                 _buildCardChip(
                   icon: Icons.arrow_upward_rounded,
-                  label: 'Receitas',
+                  label: context.translate('incomes'),
                   value: balance != null
                       ? _formatCurrency(balance!.incomes)
                       : 'R\$ --,--',
@@ -68,7 +69,7 @@ class BalanceCardWidget extends StatelessWidget {
                 const SizedBox(width: 16),
                 _buildCardChip(
                   icon: Icons.arrow_downward_rounded,
-                  label: 'Despesas',
+                  label: context.translate('expenses'),
                   value: balance != null
                       ? _formatCurrency(balance!.expenses)
                       : 'R\$ --,--',

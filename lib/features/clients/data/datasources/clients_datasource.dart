@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:isolate';
 
 import 'package:dartz/dartz.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../../../../core/enums/api_response_status_enum.dart';
 import '../../../../core/errors/errors_export.dart';
@@ -43,13 +44,13 @@ class ClientsDatasource extends ClientsRepository {
         );
 
         return Right(parsedModel);
-      } catch (error) {
+      } catch (error, stackTrace) {
         log(
           'Error: ${error.toString()}',
           name: 'ClientsDatasource: getClientsList',
         );
 
-        /// TODO: Implementar gravação de log de erro no Crashlytics ou simular
+        FirebaseCrashlytics.instance.recordError(error, stackTrace);
         return const Left(null);
       }
     } else if (apiResponse.status == ApiResponseStatus.errorTimeout) {

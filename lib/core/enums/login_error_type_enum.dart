@@ -5,23 +5,23 @@
 /// e o lookup [fromFirebaseCode] mapeia os códigos do [FirebaseAuthException].
 enum LoginErrorType {
   userNotFound(
-    errorMessage: 'Usuário ou Senha Inválidos',
+    errorMessage: 'error_login_user_not_found',
     firebaseAuthErrorMessage: 'user-not-found',
   ),
   wrongPassword(
-    errorMessage: 'Usuário ou Senha Inválidos',
+    errorMessage: 'error_login_wrong_password',
     firebaseAuthErrorMessage: 'wrong-password',
   ),
   invalidUserOrPassword(
-    errorMessage: 'Usuário ou Senha Inválidos',
+    errorMessage: 'error_login_invalid_user_or_password',
     firebaseAuthErrorMessage: 'invalid-credential',
   ),
   inactiveUser(
-    errorMessage: 'Usuário inativo!',
+    errorMessage: 'error_login_inactive_user',
     firebaseAuthErrorMessage: 'user-disabled',
   ),
   genericError(
-    errorMessage: 'Ocorreu um erro inesperado no processo de login.',
+    errorMessage: 'error_login_generic',
     firebaseAuthErrorMessage: '',
   )
   ;

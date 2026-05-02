@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../../../../core/enums/login_error_type_enum.dart';
 import '../../../../core/errors/errors_export.dart';
@@ -70,6 +71,7 @@ class LoginDatasource extends LoginRepository {
         name: 'LoginDatasource: postRequestLogin',
         stackTrace: stackTrace,
       );
+      FirebaseCrashlytics.instance.recordError(error, stackTrace);
       return const Left(null);
     }
   }

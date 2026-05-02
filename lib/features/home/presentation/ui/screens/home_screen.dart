@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_template/core/localization/app_localizations_extension.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../../core/enums/error_state_type_enum.dart';
@@ -107,10 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _loadedHomeState(List<TransactionEntity> transactions) {
     if (transactions.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'Nenhuma transação encontrada.',
-          style: TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
+          context.translate('no_transactions_found'),
+          style: const TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
         ),
       );
     }
@@ -122,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ) {
     return HomeErrorWidget(
       icon: Icons.error_outline_rounded,
-      message: state.errorStateType.message,
+      message: context.translate(state.errorStateType.message),
       onTap: () => _homeBloc.add(const LoadHomeTransactionsEvent()),
     );
   }
@@ -136,9 +137,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'Últimas transações',
-            style: TextStyle(
+          Text(
+            context.translate('latest_transactions'),
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 17,
               fontWeight: FontWeight.w700,
@@ -151,9 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 context,
               ).pushNamed(RoutesList.ClientsScreen.routeName);
             },
-            child: const Text(
-              'Ver Clientes',
-              style: TextStyle(
+            child: Text(
+              context.translate('view_clients'),
+              style: const TextStyle(
                 color: Color(0xFF6C63FF),
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
