@@ -1,95 +1,115 @@
-# 🚀 Flutter Template Base
+# Flutter Template Base
 
-Este repositório é um **Template Base de Arquitetura** para aceleração e padronização no desenvolvimento de novos aplicativos Flutter. Ele engloba as melhores práticas de Engenharia de Software focadas no desenvolvimento Mobile, orientadas a escalabilidade, manutenibilidade e modularidade.
+Este repositório é um **Template de Arquitetura** para aceleração e padronização no desenvolvimento de novos aplicativos Flutter. Além de um template funcional, este projeto serve como portfólio onde aplico as melhores práticas de Engenharia de Software focadas no desenvolvimento Mobile, orientadas a escalabilidade, manutenibilidade e modularidade.
 
-## 🛠️ Tecnologias e Padrões Principais
+## Tecnologias e Padrões Principais
 
-* **Clean Architecture:** Separação estrita em camadas (Domain, Data, Presentation).
-* **BLoC (Business Logic Component):** Gerenciamento de estado reativo e previsível.
-* **FVM (Flutter Version Manager):** Garantia de consistência da versão do Flutter em toda a equipe.
-* **Environment Configuration (`.env`):** Gerenciamento de variáveis sensíveis e chaveamento fácil entre Prod/Dev.
-* **Sistema Centralizado de Mocks:** Arquitetura para dev-mode sem dependência de APIs em backend.
-* **Integração Nativa com IA (Antigravity):** Regras de arquitetura e Workflows acoplados ao projeto.
+- **Clean Architecture:** Separação estrita em camadas (Domain, Data, Presentation) com UseCases.
+- **BLoC (Business Logic Component):** Gerenciamento de estado reativo e previsível.
+- **Service Locator (get_it):** Injeção de dependência elegante e prática.
+- **Functional Programming (dartz):** Tratamento de erros via Either eOption.
+- **FVM (Flutter Version Manager):** Garantia de consistência da versão do Flutter.
+- **Environment Configuration (.env):** Gerenciamento de variáveis sensíveis e chaveamento Prod/Dev.
+- **Sistema Centralizado de Mocks:** Desenvolvimento offline sem dependência de APIs.
+- **Integração com IA (Antigravity):** Regras de arquitetura e Workflows耦合 ao projeto.
+- ** flutter_secure_storage:** Armazenamento seguro de dados sensíveis.
+- **sqflite:** Banco de dados local SQLite.
+- **Provider:**輔佐 ao BLoC para provider de estado global.
+- **cached_network_image:** Cache de imagens para performance.
 
 ---
 
-## 🏗️ Design do Sistema & Arquitetura
+## Design do Sistema & Arquitetura
 
-O projeto adota os princípios de Clean Architecture, garantindo que as regras de negócio sejam isoladas do UI e de pacotes externos, respeitando a regra de dependência de fora para dentro. Cada funcionalidade é tratada como um módulo dentro da pasta `lib/features/`:
+O projeto adota Clean Architecture com UseCases e Repository Pattern isolando regras de negócio do UI e pacotes externos. Cada funcionalidade é um módulo em `lib/features/`:
 
 ```text
 lib/
- ├─ core/            # (Infraestrutura) Serviços base, clients HTTP, Helpers, injetores e Enums base.
+ ├─ core/                      # Infraestrutura
+ │   ├─ entities/              # Entidades genéricas (ApiResponse)
+ │   ├─ enums/                 # Enums globais
+ │   ├─ errors/                # Failures (ServerFailure, TimeoutFailure, SessionExpiredFailure)
+ │   ├─ helpers/               # EnvironmentHelper, SessionHelper, MockHelper, SecureStorageHelper
+ │   ├─ localization/         # i18n com Flutter ARB
+ │   ├─ providers/            # LocaleProvider
+ │   ├─ routes/               # Sistema de rotas centralizado
+ │   ├─ services/             # ApiService, ApiRequest
+ │   ├─ usecases/              # UseCase base abstrato
+ │   ├─ widgets/              # Componentes reuseáveis (LocaleSelector)
+ │   └─ utils/                # SnackbarUtils, LoadUtils
  └─ features/
      └─ [feature]/
-         ├─ domain/       # UseCases, Entities e Repositories (Regras de Negócio).
-         ├─ data/         # Models e DataSources (Comunicação Externa e Parsing de dados).
-         └─ presentation/ # Pages, Widgets e Bloc/States (Interface de Usuário).
+         ├─ domain/            # UseCases, Entities, Repositories
+         ├─ data/             # Models, DataSources
+         └─ presentation/    # BLoC, Pages, Widgets
 ```
 
-### Regra do Factory Constructors nos Models
-Os Models (`data/models/`) exigem construtores de classe factory nomeados (`fromMap`, `fromJson`), combinados com getters ou mapeamento de enums internamente. Isso evita construtores inchados e previne superposições com a Entidade.
+### Padrões Implementados
+
+- **Export Barrels (*_export.dart):** Organización de imports
+- **UseCase Pattern:** Abstracts com método call e Either
+- **Factory Constructors:**fromMap/fromJson nos Models
+- **Repository Pattern:**Interface no domain, implementação no data
+- **Error Handling:**Failure classes com Either
+- **Dependency Injection:**get_it com registering de factories e singletons
 
 ---
 
-## ⚙️ Configurações Iniciais e Instalação
+## Configurações Iniciais e Instalação
 
 ### 1. Flutter Version Manager (FVM)
-Este projeto utiliza FVM para travar a versão do SDK. É requisito ter o `fvm` instalado globalmente.
 
-Instale as dependências com a versão correta do projeto vinculada na pasta `.fvm/`:
+Este projeto utiliza FVM para travar a versão do SDK. Requer `fvm` instalado globalmente.
+
 ```bash
 fvm install
 fvm flutter pub get
 ```
-*Dica para VSCode:* Garanta que o caminho do Flutter aponta para `.fvm/flutter_sdk` nas configurações da sua workspace.
 
-### 2. Variáveis de Ambiente (`.env`)
-Todo o chaveamento de URLs e Flags deve ser feito via variáveis de ambiente.
+### 2. Variáveis de Ambiente (.env)
 
-1. Na raiz do projeto, copie ou crie o arquivo `.env`:
+Copie `.env.example` ou crie `.env`:
+
 ```text
 BASE_URL=https://api.exemplo.com.br/v1
 USE_MOCK=true
 ```
-2. A classe `EnvironmentHelper` (no core do app) carrega automaticamente este arquivo antes do `runApp()`.
 
-### 3. Configuração do Firebase
-Este projeto utiliza **Firebase Auth** e **Crashlytics**. Por motivos de segurança e boas práticas de CI/CD, os arquivos de configuração **não são commitados**.
+### 3. Firebase
 
-Para configurar seu ambiente local:
+Este projeto utiliza **Firebase Auth** e **Crashlytics**. Arquivos de configuração **não são commitados**.
 
-1. Crie um projeto no [Console do Firebase](https://console.firebase.google.com/).
-2. Adicione os aplicativos Android e iOS utilizando os Package Names / Bundle IDs adequados.
-3. Baixe os arquivos de configuração e coloque-os nos seguintes diretórios:
-    *   **Android:** `android/app/google-services.json`
-    *   **iOS:** `ios/Runner/GoogleService-Info.plist`
-4. (Somente iOS) Certifique-se de associar o arquivo ao projeto no Xcode.
-5. Se for utilizar Google Sign-In, registre seu SHA-1 no console do Firebase.
+Para configurar:
+1. Crie projeto no [Console Firebase](https://console.firebase.google.com/)
+2. Adicione apps Android/iOS com Package Names adequados
+3. Baixe e place os arquivos:
+   - **Android:** `android/app/google-services.json`
+   - **iOS:** `ios/Runner/GoogleService-Info.plist`
+4. Registre SHA-1 se usar Google Sign-In
 
 ---
 
-## 🧪 Como funciona o Sistema de Mocks (Desenvolvimento Offline)
+## Sistema de Mocks (Desenvolvimento Offline)
 
-A arquitetura já possui um mecanismo avançado para simulação de respostas via API chamado **`MockHelper`**.
+O `MockHelper` intercepta requisições quando `USE_MOCK=true`:
 
-* **Ativação:** Modifique `USE_MOCK=true` no `.env`.
-* **Como intercepta:** O seu `DataSource` pode checar a propriedade `EnvironmentHelper.instance.useMock`. Caso seja ativa, ele solicita os dados para a classe estática `MockHelper` que intercepta requisições baseadas no Enum `ApiEndpoints`.
-* **Como adicionar novos Mocks:** Basta criar os dados brutos JSON na classe `MockHelper` e associá-los à URL de endpoint adequada. Nenhuma linha do seu UseCase ou Bloc precisa ser tocada!
-
----
-
-## 🤖 Automação e IA (Antigravity e Agentes)
-
-Esse projeto está pré-configurado para agir em conjunto com LLMs de code-gen como o **Deepmind Antigravity** e outras ferramentas baseadas no Cursor/Cline.
-
-* **Regras de Arquitetura (`.agents/rules/`):** A IA lê inerentemente nossos guias de System Design, elaboração de testes unitários e criação de Doc comments. Não precisa pedir, os agentes já conhecem o padrão.
-* **Workflows Interativos (`.agents/workflows/`):** Contêiner nativo para rodar rotinas automatizadas no prompt via Slash command (`/`):
-  * `/check_dependencies` : Audita o `pubspec.yaml`.
-  * `/flutter_clean_full` : Limpeza brutal de metadados e reinstalação de dependências nativas (Pods).
-  * `/prepare_build_release` : Script guiado para bump release version.
-  * `/validate_requirements` : Ferramenta de reflexão (prevenção de código Over-Engineered).
+- **Ativação:** `USE_MOCK=true` no `.env`
+- **Como funciona:** DataSource checa `EnvironmentHelper.instance.useMock` e retorna dados do MockHelper
+- **Como adicionar:** Adicione JSON na classe MockHelper associada ao endpoint
 
 ---
 
-Feito com extrema atenção aos detalhes para a construção de projetos robustos. Bom desenvolvimento! ☕
+## Automação e IA (Agentes)
+
+Projeto pré-configurado paraLLMs como **Deepmind Antigravity** e ferramentas Cursor/Cline.
+
+- **.agents/rules/:** Guias de System Design, testes unitários, Doc comments
+- **.agents/workflows/:** Rotinas automatizadas via slash commands:
+  - `/check_dependencies` - Audita pubspec.yaml
+  - `/flutter_clean_full` - Limpa metadados e pods
+  - `/prepare_build_release` - Script de bump version
+  - `/validate_requirements` - Reflexão contra over-engineering
+
+---
+
+Feito com extrema atenção aos detalhes para construção de projetos robustos. Bom desenvolvimento!

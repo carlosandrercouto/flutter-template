@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    ".agents/rules/vexp.md",
+    ".agents/rules/general.md",
+    ".agents/rules/unittests.md",
+    ".agents/rules/documentation.md",
+    ".agents/workflows/validate_requirements.md",
+    ".agents/workflows/prepare_build_release.md",
+    ".agents/workflows/flutter_clean_full.md",
+    ".agents/workflows/check_dependencies.md",
+    ".agents/workflows/product-planner.md"
+  ]
+}

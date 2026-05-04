@@ -1,0 +1,16 @@
+# Ignora arquivos de build e cache
+build/
+.dart_tool/
+.fvm/
+ios/
+android/
+macos/
+windows/
+linux/
+
+# Ignora arquivos gerados automaticamente (se você usar Freezed/Riverpod/JsonSerializable)
+*.g.dart
+*.freezed.dart
+
+# Ignora assets pesados
+assets/

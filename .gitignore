@@ -133,3 +133,4 @@ firebase_options.dart
 firebase/cloud/node_modules
 firebase/cloud/package-lock.json
 
+.opencode
