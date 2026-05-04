@@ -26,5 +26,9 @@
     "no_clients_found": "Nenhum cliente encontrado.",
     "available_balance": "Saldo disponível",
     "incomes": "Receitas",
-    "expenses": "Despesas"
+    "expenses": "Despesas",
+    "theme": "Tema",
+    "automatic": "Automático",
+    "use_system_default": "Utilizar o padrão do sistema",
+    "dark_mode": "Modo noturno"
 }

@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_template/core/helpers/secure_storage_helper/secure_storage_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_template/core/providers/locale_provider.dart';
+import 'package:flutter_template/core/providers/theme_provider.dart';
 import 'package:flutter_template/core/helpers/session_helper.dart';
 import 'package:flutter_template/core/helpers/shared_preferences_helper/shared_preferences_helper.dart';
 import 'package:flutter_template/core/localization/app_localizations.dart';
@@ -17,6 +18,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'core/helpers/environment_helper.dart';
 import 'core/routes/routes.dart';
 import 'core/routes/routes_list.dart';
+import 'core/enums/app_theme_type_enum.dart';
+import 'core/ui/constants/app_themes.dart';
 
 void main() async {
   runZonedGuarded<Future<void>>(
@@ -80,6 +83,21 @@ void main() async {
           },
           dependsOn: [SharedPreferencesHelper, AppLocalizations],
         );
+
+        // ThemeProvider — aguarda SharedPreferencesHelper.
+        getIt.registerSingletonAsync<ThemeProvider>(
+          () async {
+            final sharedPreferencesHelper = GetIt.I<SharedPreferencesHelper>();
+            final String? savedTheme = sharedPreferencesHelper.getStringValue(
+              key: SharedPreferencesHelperKeys.currentTheme,
+            );
+            final AppThemeType initialTheme = savedTheme != null
+                ? AppThemeType.getAppThemeType(savedTheme)
+                : AppThemeType.System;
+            return ThemeProvider(initialTheme: initialTheme);
+          },
+          dependsOn: [SharedPreferencesHelper],
+        );
       }
 
       await configureGlobalDependencies();
@@ -88,6 +106,7 @@ void main() async {
       await Future.wait([
         getIt.isReady<AppLocalizations>(),
         getIt.isReady<LocaleProvider>(),
+        getIt.isReady<ThemeProvider>(),
       ]);
 
       runApp(
@@ -95,6 +114,9 @@ void main() async {
           providers: [
             ChangeNotifierProvider<LocaleProvider>.value(
               value: getIt<LocaleProvider>(),
+            ),
+            ChangeNotifierProvider<ThemeProvider>.value(
+              value: getIt<ThemeProvider>(),
             ),
             // Futuramente outros providers globais podem ser adicionados aqui.
           ],
@@ -118,10 +140,13 @@ class FlutterTemplateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final localeProvider = Provider.of<LocaleProvider>(context);
+
     return MaterialApp(
       title: 'Flutter Template',
       debugShowCheckedModeBanner: true,
-      locale: Provider.of<LocaleProvider>(context).locale,
+      locale: localeProvider.locale,
       supportedLocales: const [
         Locale('pt', 'BR'),
         Locale('en', 'US'),
@@ -131,13 +156,9 @@ class FlutterTemplateApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF7C3AED),
-          brightness: Brightness.dark,
-        ),
-      ),
+      theme: appThemeData[AppThemeType.MonLight],
+      darkTheme: appThemeData[AppThemeType.MonDark],
+      themeMode: themeProvider.themeMode,
       initialRoute: RoutesList.LoginScreen.routeName,
       onGenerateRoute: getRoute,
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_template/core/localization/app_localizations_extension.dart';
+import 'package:flutter_template/core/ui/widgets/theme_selector_widget.dart';
 
 import '../../../../../core/routes/routes_list.dart';
 import '../../bloc/login_bloc.dart';
@@ -84,9 +85,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: Theme.of(context).brightness == Brightness.dark
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: const Color(0xFF0F1117),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
@@ -120,6 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
         const LoginHeaderWidget(),
         const SizedBox(height: 48),
         LoginFormWidget(onLoginSubmitted: _onLoginSubmitted),
+        const SizedBox(height: 24),
+        const ThemeSelectorWidget(),
         const SizedBox(height: 24),
       ],
     );
