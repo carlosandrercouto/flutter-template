@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_template/core/localization/app_localizations_extension.dart';
-import 'package:flutter_template/core/widgets/locale_selector.dart';
+import 'package:flutter_template/core/ui/widgets/locale_selector.dart';
 
 class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({
