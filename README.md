@@ -31,9 +31,10 @@ lib/
  │   ├─ errors/                # Failures (ServerFailure, TimeoutFailure, SessionExpiredFailure)
  │   ├─ helpers/               # EnvironmentHelper, SessionHelper, MockHelper, SecureStorageHelper
  │   ├─ localization/         # i18n com Flutter ARB
- │   ├─ providers/            # LocaleProvider
+ │   ├─ providers/            # LocaleProvider, ThemeProvider
  │   ├─ routes/               # Sistema de rotas centralizado
  │   ├─ services/             # ApiService, ApiRequest
+ │   ├─ ui/constants/         # AppColors, AppThemes, AppStyles, ThemeExtensions
  │   ├─ usecases/              # UseCase base abstrato
  │   ├─ widgets/              # Componentes reuseáveis (LocaleSelector)
  │   └─ utils/                # SnackbarUtils, LoadUtils
@@ -52,6 +53,7 @@ lib/
 - **Repository Pattern:**Interface no domain, implementação no data
 - **Error Handling:**Failure classes com Either
 - **Dependency Injection:**get_it com registering de factories e singletons
+- **Theme Engine Dinâmico:** Gerenciamento de temas (Light/Dark/System) utilizando `ThemeData`, `AppColors` e propriedades tipadas customizadas via `ThemeExtension` (`TextColors`, `BackgroundExtensionColors`) do Flutter.
 
 ---
 

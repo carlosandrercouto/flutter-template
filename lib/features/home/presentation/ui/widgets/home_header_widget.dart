@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/core/ui/constants/app_styles.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_text.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
   final String userName;
@@ -7,6 +9,7 @@ class HomeHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColors = Theme.of(context).extension<TextColors>();
     final firstName = userName.split(' ').first;
 
     return Padding(
@@ -19,19 +22,15 @@ class HomeHeaderWidget extends StatelessWidget {
             children: [
               Text(
                 'Olá, $firstName 👋',
-                style: const TextStyle(
-                  color: Color(0xFF9BA3B8),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                style: AppStyles.regular14().copyWith(
+                  color: textColors?.secondary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 userName,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
+                style: AppStyles.bold20().copyWith(
+                  color: textColors?.general,
                   letterSpacing: -0.3,
                 ),
               ),
@@ -51,10 +50,8 @@ class HomeHeaderWidget extends StatelessWidget {
             child: Center(
               child: Text(
                 userName.isNotEmpty ? userName[0].toUpperCase() : '?',
-                style: const TextStyle(
+                style: AppStyles.bold18().copyWith(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
                 ),
               ),
             ),

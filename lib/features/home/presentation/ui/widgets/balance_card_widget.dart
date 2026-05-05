@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_template/core/ui/constants/app_styles.dart';
 import 'package:flutter_template/core/localization/app_localizations_extension.dart';
 import 'package:intl/intl.dart';
 
@@ -37,10 +37,9 @@ class BalanceCardWidget extends StatelessWidget {
           children: [
             Text(
               context.translate('available_balance'),
-              style: const TextStyle(
+              style: AppStyles.regular14().copyWith(
                 color: Colors.white70,
                 fontSize: 13,
-                fontWeight: FontWeight.w400,
               ),
             ),
             const SizedBox(height: 8),
@@ -48,10 +47,8 @@ class BalanceCardWidget extends StatelessWidget {
               balance != null
                   ? _formatCurrency(balance!.available)
                   : 'R\$ --,--',
-              style: const TextStyle(
+              style: AppStyles.extraBold32().copyWith(
                 color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.w800,
                 letterSpacing: -0.5,
               ),
             ),
@@ -110,14 +107,13 @@ class BalanceCardWidget extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(color: Colors.white60, fontSize: 11),
+              style: AppStyles.regular12().copyWith(color: Colors.white60, fontSize: 11),
             ),
             Text(
               value,
-              style: const TextStyle(
+              style: AppStyles.semiBold14().copyWith(
                 color: Colors.white,
                 fontSize: 13,
-                fontWeight: FontWeight.w600,
               ),
             ),
           ],

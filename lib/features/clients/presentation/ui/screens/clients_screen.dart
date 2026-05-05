@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_template/core/localization/app_localizations_extension.dart';
+import 'package:flutter_template/core/ui/constants/app_styles.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_text.dart';
 import 'package:flutter_template/features/clients/domain/entities/client_item_entity.dart';
-
 import '../../bloc/clients_bloc.dart';
 import '../widgets/widgets_export.dart';
 
@@ -29,22 +30,18 @@ class _ClientsScreenState extends State<ClientsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textColors = Theme.of(context).extension<TextColors>();
+
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0F14),
       appBar: AppBar(
         title: Text(
           context.translate('clients'),
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
+          style: AppStyles.bold20().copyWith(color: textColors?.general),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF0D0F14),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios, color: textColors?.general),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -74,15 +71,22 @@ class _ClientsScreenState extends State<ClientsScreen> {
   // ===================================================================================================================
 
   Widget _loadingClientsListState() {
+    final textColors = Theme.of(context).extension<TextColors>();
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CupertinoActivityIndicator(radius: 16, color: Color(0xFF6C63FF)),
+          const CupertinoActivityIndicator(
+            radius: 16,
+            color: Color(0xFF6C63FF),
+          ),
           const SizedBox(height: 16),
           Text(
             context.translate('processing_isolates'),
-            style: const TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
+            style: AppStyles.regular14().copyWith(
+              color: textColors?.secondary,
+            ),
           ),
         ],
       ),
@@ -90,11 +94,15 @@ class _ClientsScreenState extends State<ClientsScreen> {
   }
 
   Widget _loadedClientsListState(List<ClientItemEntity> clients) {
+    final textColors = Theme.of(context).extension<TextColors>();
+
     if (clients.isEmpty) {
       return Center(
         child: Text(
           context.translate('no_clients_found'),
-          style: const TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
+          style: AppStyles.regular14().copyWith(
+            color: textColors?.secondary,
+          ),
         ),
       );
     }
@@ -102,6 +110,8 @@ class _ClientsScreenState extends State<ClientsScreen> {
   }
 
   Widget _errorHandleLoadClientsListState(ErrorLoadClientsListState state) {
+    final textColors = Theme.of(context).extension<TextColors>();
+
     return Center(
       child: InkWell(
         onTap: () => _clientsBloc.add(const LoadClientsListEvent()),
@@ -111,17 +121,16 @@ class _ClientsScreenState extends State<ClientsScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
+              Icon(
                 Icons.error_outline_rounded,
-                color: Color(0xFF9BA3B8),
+                color: textColors?.secondary,
                 size: 42,
               ),
               const SizedBox(height: 12),
               Text(
                 context.translate(state.errorStateType.message),
-                style: const TextStyle(
-                  color: Color(0xFF9BA3B8),
-                  fontSize: 14,
+                style: AppStyles.regular14().copyWith(
+                  color: textColors?.secondary,
                 ),
                 textAlign: TextAlign.center,
               ),

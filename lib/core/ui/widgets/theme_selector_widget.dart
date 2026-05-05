@@ -49,6 +49,7 @@ class ThemeSelectorWidget extends StatelessWidget {
                 style: AppStyles.regular14(),
               ),
               value: isAutomatic,
+              // ignore: deprecated_member_use
               activeColor: Theme.of(context).colorScheme.primary,
               onChanged: (bool value) {
                 if (value) {
@@ -70,6 +71,7 @@ class ThemeSelectorWidget extends StatelessWidget {
                 style: AppStyles.semiBold16(),
               ),
               value: isDarkMode,
+              // ignore: deprecated_member_use
               activeColor: Theme.of(context).colorScheme.primary,
               onChanged: (bool value) {
                 // Ao forçar um tema manualmente, sai do modo automático

@@ -108,11 +108,17 @@ class AppColors {
   /// Cor de texto terciario em modo claro.
   static const Color textTertiaryLight = Color(0xFF64748B);
 
-  /// Cor de texto em modo escuro.
+  /// Cor de texto com maior destaque em modo claro.
+  static const Color textBlackedOutLight = Color(0xFF000E32);
+
+  /// Cor de texto primario em modo escuro.
   static const Color textDark = Color(0xFFF8FAFC);
 
   /// Cor de texto secundario em modo escuro.
   static const Color textSecondaryDark = Color(0xFFCBD5E1);
+
+  /// Cor de texto com maior destaque em modo escuro.
+  static const Color textBlackedOutDark = Color(0xFFFFFFFF);
 
   // region: Icones
   // ===================================================================================================================

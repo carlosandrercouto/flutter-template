@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_template/core/localization/app_localizations_extension.dart';
+import 'package:flutter_template/core/ui/constants/app_styles.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_text.dart';
 import 'package:flutter_template/core/ui/widgets/locale_selector.dart';
 
 class LoginFormWidget extends StatefulWidget {
@@ -65,6 +67,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final textColors = Theme.of(context).extension<TextColors>();
+
     return Form(
       key: _formKey,
       child: Column(
@@ -75,6 +79,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           ),
           const SizedBox(height: 20),
           _buildInputField(
+            textColors: textColors,
             controller: _emailController,
             focusNode: _emailFocus,
             label: context.translate('email'),
@@ -89,6 +94,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           ),
           const SizedBox(height: 16),
           _buildInputField(
+            textColors: textColors,
             controller: _passwordController,
             focusNode: _passwordFocus,
             label: context.translate('password'),
@@ -103,7 +109,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                 _obscurePassword
                     ? Icons.visibility_outlined
                     : Icons.visibility_off_outlined,
-                color: Colors.white38,
+                color: textColors?.secondary,
                 size: 20,
               ),
               onPressed: () =>
@@ -120,6 +126,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   }
 
   Widget _buildInputField({
+    required TextColors? textColors,
     required TextEditingController controller,
     required FocusNode focusNode,
     required String label,
@@ -138,10 +145,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.white70,
+          style: AppStyles.medium14().copyWith(
+            color: textColors?.secondary,
             fontSize: 13,
-            fontWeight: FontWeight.w500,
             letterSpacing: 0.3,
           ),
         ),
@@ -152,48 +158,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           obscureText: obscureText,
           keyboardType: keyboardType,
           textInputAction: inputAction,
-          style: const TextStyle(color: Colors.white, fontSize: 15),
+          style: AppStyles.regular16().copyWith(color: textColors?.general, fontSize: 15),
           inputFormatters: formatters,
           onFieldSubmitted: onFieldSubmitted,
           validator: validator,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.25)),
-            prefixIcon: Icon(icon, color: Colors.white38, size: 20),
+            hintStyle: AppStyles.regular16().copyWith(color: textColors?.secondary),
+            prefixIcon: Icon(icon, color: textColors?.secondary, size: 20),
             suffixIcon: suffixIcon,
-            filled: true,
-            fillColor: const Color(0xFF1E2130),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: Color(0xFF2A2D3E), width: 1),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(
-                color: Color(0xFF7C3AED),
-                width: 1.5,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: Color(0xFFE53E3E), width: 1),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(
-                color: Color(0xFFE53E3E),
-                width: 1.5,
-              ),
-            ),
-            errorStyle: const TextStyle(color: Color(0xFFE53E3E), fontSize: 12),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
-            ),
           ),
         ),
       ],
@@ -231,10 +204,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           ),
           child: Text(
             context.translate('enter'),
-            style: const TextStyle(
+            style: AppStyles.semiBold16().copyWith(
               color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
               letterSpacing: 0.3,
             ),
           ),
@@ -244,22 +215,22 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   }
 
   Widget _buildHint() {
+    final textColors = Theme.of(context).extension<TextColors>();
+
     return Center(
       child: Column(
         children: [
           Text(
             '${context.translate('test_credentials')}:',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.3),
-              fontSize: 12,
+            style: AppStyles.regular12().copyWith(
+              color: textColors?.secondary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             'carlosandrecouto@live.com / 12345678',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.45),
-              fontSize: 12,
+            style: AppStyles.regular12().copyWith(
+              color: textColors?.general,
               fontFamily: 'monospace',
             ),
           ),

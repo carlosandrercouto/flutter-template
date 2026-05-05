@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/core/ui/constants/app_styles.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_background.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_text.dart';
 import 'package:intl/intl.dart';
 
 import '../../../domain/entities/transaction_entity.dart';
@@ -12,13 +15,15 @@ class TransactionItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
     final dateFormatter = DateFormat('dd MMM', 'pt_BR');
+    final textColors = Theme.of(context).extension<TextColors>();
+    final bgColors = Theme.of(context).extension<BackgroundExtensionColors>();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF161A24),
+        color: bgColors?.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF252A38), width: 1),
+        border: Border.all(color: bgColors?.onBackground ?? Colors.transparent, width: 1),
       ),
       child: Row(
         children: [
@@ -26,12 +31,12 @@ class TransactionItemWidget extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: const Color(0xFF1E2233),
+              color: bgColors?.onSurface,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.receipt_long_rounded,
-              color: Color(0xFF6C63FF),
+              color: Theme.of(context).colorScheme.primary,
               size: 20,
             ),
           ),
@@ -42,10 +47,9 @@ class TransactionItemWidget extends StatelessWidget {
               children: [
                 Text(
                   transaction.name,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: AppStyles.medium16().copyWith(
+                    color: textColors?.general,
                     fontSize: 15,
-                    fontWeight: FontWeight.w500,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -53,9 +57,8 @@ class TransactionItemWidget extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   dateFormatter.format(transaction.date),
-                  style: const TextStyle(
-                    color: Color(0xFF9BA3B8),
-                    fontSize: 12,
+                  style: AppStyles.regular12().copyWith(
+                    color: textColors?.secondary,
                   ),
                 ),
               ],
@@ -63,10 +66,9 @@ class TransactionItemWidget extends StatelessWidget {
           ),
           Text(
             '- ${formatter.format(transaction.amount)}',
-            style: const TextStyle(
-              color: Color(0xFFFF6B8A),
+            style: AppStyles.semiBold16().copyWith(
+              color: textColors?.general,
               fontSize: 15,
-              fontWeight: FontWeight.w600,
             ),
           ),
         ],

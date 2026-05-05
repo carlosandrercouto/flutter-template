@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/core/ui/constants/app_styles.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_text.dart';
 
 import '../../../domain/entities/client_item_entity.dart';
 import 'client_item_widget.dart';
@@ -11,6 +13,8 @@ class ClientsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColors = Theme.of(context).extension<TextColors>();
+
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -18,10 +22,9 @@ class ClientsListWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
               'Total de Clientes: ${clients.length}',
-              style: const TextStyle(
+              style: AppStyles.semiBold14().copyWith(
                 fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF9BA3B8),
+                color: textColors?.secondary,
               ),
             ),
           ),

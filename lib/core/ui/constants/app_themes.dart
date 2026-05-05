@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_background.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_text.dart';
 import 'app_colors.dart';
 import '../../enums/app_theme_type_enum.dart';
 
@@ -93,6 +95,20 @@ ThemeData _buildLightTheme() {
     iconTheme: const IconThemeData(
       color: AppColors.iconLight,
     ),
+    extensions: <ThemeExtension<dynamic>>[
+      const TextColors(
+        withLink: AppColors.primary,
+        general: AppColors.textPrimaryLight,
+        secondary: AppColors.textSecondaryLight,
+        blackedOut: AppColors.textBlackedOutLight,
+      ),
+      const BackgroundExtensionColors(
+        background: AppColors.backgroundLight,
+        onBackground: AppColors.borderLight,
+        surface: AppColors.surfaceLight,
+        onSurface: AppColors.borderLight,
+      ),
+    ],
   );
 }
 
@@ -180,5 +196,19 @@ ThemeData _buildDarkTheme() {
     iconTheme: const IconThemeData(
       color: AppColors.iconDark,
     ),
+    extensions: <ThemeExtension<dynamic>>[
+      const TextColors(
+        withLink: AppColors.primaryLight,
+        general: AppColors.textDark,
+        secondary: AppColors.textSecondaryDark,
+        blackedOut: AppColors.textBlackedOutDark,
+      ),
+      const BackgroundExtensionColors(
+        background: AppColors.backgroundDark,
+        onBackground: AppColors.borderDark,
+        surface: AppColors.surfaceDark,
+        onSurface: AppColors.borderDark,
+      ),
+    ],
   );
 }

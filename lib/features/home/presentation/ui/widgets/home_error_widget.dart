@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/core/ui/constants/app_styles.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_text.dart';
 
 class HomeErrorWidget extends StatelessWidget {
   final IconData icon;
@@ -14,6 +16,8 @@ class HomeErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColors = Theme.of(context).extension<TextColors>();
+
     return Center(
       child: InkWell(
         onTap: onTap,
@@ -23,11 +27,13 @@ class HomeErrorWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: const Color(0xFF9BA3B8), size: 42),
+              Icon(icon, color: textColors?.secondary, size: 42),
               const SizedBox(height: 12),
               Text(
                 message,
-                style: const TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
+                style: AppStyles.regular14().copyWith(
+                  color: textColors?.secondary,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],

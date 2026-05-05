@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_template/core/localization/app_localizations_extension.dart';
+import 'package:flutter_template/core/ui/constants/app_styles.dart';
+import 'package:flutter_template/core/ui/constants/extension_colors_text.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../../core/enums/error_state_type_enum.dart';
@@ -37,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0F14),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,11 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _loadedHomeState(List<TransactionEntity> transactions) {
+    final textColors = Theme.of(context).extension<TextColors>();
     if (transactions.isEmpty) {
       return Center(
         child: Text(
           context.translate('no_transactions_found'),
-          style: const TextStyle(color: Color(0xFF9BA3B8), fontSize: 14),
+          style: AppStyles.regular14().copyWith(
+            color: textColors?.general,
+          ),
         ),
       );
     }
@@ -132,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // ===================================================================================================================
 
   Widget _buildTransactionListTitle(BuildContext context) {
+    final textColors = Theme.of(context).extension<TextColors>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
@@ -139,10 +144,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             context.translate('latest_transactions'),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 17,
-              fontWeight: FontWeight.w700,
+            style: AppStyles.bold17().copyWith(
+              color: textColors?.general,
               letterSpacing: -0.2,
             ),
           ),
@@ -154,10 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: Text(
               context.translate('view_clients'),
-              style: const TextStyle(
-                color: Color(0xFF6C63FF),
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
+              style: AppStyles.semiBold14().copyWith(
+                color: textColors?.withLink,
               ),
             ),
           ),
